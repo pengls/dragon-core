@@ -10,14 +10,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * @ClassName: CryptoHelper
+ * @ClassName: CryptoFactory
  * @Description: 加密工具类
  * @Author: pengl
  * @Date: 2020/3/26 20:03
  * @Version V1.0
  */
 @Slf4j
-public class CryptoHelper {
+public class CryptoFactory {
     private static final String PACKAGE_NAME = "com.dragon.core.crypto";
 
     private static Map<Algorithm, Crypto> cryptoMap = null;

@@ -32,39 +32,39 @@ public class CryptoTest {
 
     @Test
     public void base64Test(){
-        String encryt = CryptoHelper.getCrypto(Algorithm.Base64).encrypt(str);
+        String encryt = CryptoFactory.getCrypto(Algorithm.Base64).encrypt(str);
         System.out.println(encryt);
-        System.out.println(CryptoHelper.getCrypto(Algorithm.Base64).decrypt(encryt));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.Base64).decrypt(encryt));
     }
 
     @Test
     public void md5Test(){
-        String encryt = CryptoHelper.getCrypto(Algorithm.MD5).encrypt(str);
+        String encryt = CryptoFactory.getCrypto(Algorithm.MD5).encrypt(str);
         System.out.println(encryt);
     }
 
     @Test
     public void shaTest(){
-        System.out.println(CryptoHelper.getCrypto(Algorithm.SHA1).encrypt(str));
-        System.out.println(CryptoHelper.getCrypto(Algorithm.SHA256).encrypt(str));
-        System.out.println(CryptoHelper.getCrypto(Algorithm.SHA384).encrypt(str));
-        System.out.println(CryptoHelper.getCrypto(Algorithm.SHA512).encrypt(str));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.SHA1).encrypt(str));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.SHA256).encrypt(str));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.SHA384).encrypt(str));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.SHA512).encrypt(str));
     }
 
     @Test
     public void hmacTest(){
-        System.out.println(CryptoHelper.getCrypto(Algorithm.HmacMD5).encrypt(str));
-        System.out.println(CryptoHelper.getCrypto(Algorithm.HmacSHA1).encrypt(str));
-        System.out.println(CryptoHelper.getCrypto(Algorithm.HmacSHA256).encrypt(str));
-        System.out.println(CryptoHelper.getCrypto(Algorithm.HmacSHA384).encrypt(str));
-        System.out.println(CryptoHelper.getCrypto(Algorithm.HmacSHA512).encrypt(str));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.HmacMD5).encrypt(str));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.HmacSHA1).encrypt(str));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.HmacSHA256).encrypt(str));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.HmacSHA384).encrypt(str));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.HmacSHA512).encrypt(str));
     }
 
     @Test
     public void aesTest(){
         String key = "1234567890-=plmkoijnbhuygvcftrdx";
         String iv = "0okmnji98uyhgbvf";
-        Crypto aes = CryptoHelper.getCrypto(Algorithm.AES);
+        Crypto aes = CryptoFactory.getCrypto(Algorithm.AES);
         //采用默认key， iv， 工作模式 ，填充方式
         /*String defEncry = aes.encrypt(CryptoParam.builder().data(str).build());
         System.out.println("默认KEY,IV,工作模式,填充方式加密：" + defEncry);
@@ -85,38 +85,38 @@ public class CryptoTest {
 
     /*@Test
     public void des3Test(){
-        String encrypt = CryptoHelper.getCrypto(Algorithm.DES3_ECB).encrypt(str);
+        String encrypt = CryptoFactory.getCrypto(Algorithm.DES3_ECB).encrypt(str);
         System.out.println(encrypt);
-        encrypt = CryptoHelper.getCrypto(Algorithm.DES3_ECB).encrypt(str);
+        encrypt = CryptoFactory.getCrypto(Algorithm.DES3_ECB).encrypt(str);
         System.out.println(encrypt);
-        System.out.println(CryptoHelper.getCrypto(Algorithm.DES3_ECB).decrypt(encrypt));
-        System.out.println(CryptoHelper.getCrypto(Algorithm.DES3_ECB).decrypt(encrypt));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.DES3_ECB).decrypt(encrypt));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.DES3_ECB).decrypt(encrypt));
     }
 
     @Test
     public void des3Test2(){
-        String encrypt = CryptoHelper.getCrypto(Algorithm.DES3_CBC).encrypt(str);
+        String encrypt = CryptoFactory.getCrypto(Algorithm.DES3_CBC).encrypt(str);
         System.out.println(encrypt);
-        System.out.println(CryptoHelper.getCrypto(Algorithm.DES3_CBC).decrypt(encrypt));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.DES3_CBC).decrypt(encrypt));
     }
 
     @Test
     public void aesTest(){
-        String encrypt = CryptoHelper.getCrypto(Algorithm.AES_ECB).encrypt(str);
+        String encrypt = CryptoFactory.getCrypto(Algorithm.AES_ECB).encrypt(str);
         System.out.println(encrypt);
-        System.out.println(CryptoHelper.getCrypto(Algorithm.AES_ECB).decrypt(encrypt));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.AES_ECB).decrypt(encrypt));
     }
 
     @Test
     public void aesTest2(){
-        String encrypt = CryptoHelper.getCrypto(Algorithm.AES_CBC).encrypt(str);
+        String encrypt = CryptoFactory.getCrypto(Algorithm.AES_CBC).encrypt(str);
         System.out.println(encrypt);
-        System.out.println(CryptoHelper.getCrypto(Algorithm.AES_CBC).decrypt(encrypt));
+        System.out.println(CryptoFactory.getCrypto(Algorithm.AES_CBC).decrypt(encrypt));
     }*/
 
     @Test
     public void pbeTest(){
-        Crypto pbe = CryptoHelper.getCrypto(Algorithm.PBEWithMd5AndDes);
+        Crypto pbe = CryptoFactory.getCrypto(Algorithm.PBEWithMd5AndDes);
         String encrypt = pbe.encrypt(str);
         System.out.println(encrypt);
         System.out.println(pbe.decrypt(encrypt));
@@ -131,7 +131,7 @@ public class CryptoTest {
     public void rsaTest(){
         KeyPairs keyPairs = RSACoder.keyPairs();
         System.out.println("===========生成密钥对===========\n->PublickKey \n" + keyPairs.getPublicKey() + "\n->PrivateKey \n" + keyPairs.getPrivateKey());
-        Crypto rsa = CryptoHelper.getCrypto(Algorithm.RSA);
+        Crypto rsa = CryptoFactory.getCrypto(Algorithm.RSA);
         //公钥加密，私钥解密
         String encry = rsa.encrypt(CryptoParam.builder().data(str).publicKey(keyPairs.getPublicKey()).build());
         System.out.println("公钥加密：" + encry);
