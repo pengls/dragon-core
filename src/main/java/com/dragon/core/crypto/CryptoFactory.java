@@ -1,5 +1,6 @@
 package com.dragon.core.crypto;
 
+import com.dragon.core.lang.Assert;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
@@ -17,8 +18,11 @@ import java.util.stream.Collectors;
  * @Version V1.0
  */
 @Slf4j
-public class CryptoFactory {
+public final class CryptoFactory {
     private static final String PACKAGE_NAME = "com.dragon.core.crypto";
+
+    private CryptoFactory() {
+    }
 
     private static Map<Algorithm, Crypto> cryptoMap = null;
 
@@ -27,7 +31,7 @@ public class CryptoFactory {
         Set<Class<? extends Crypto>> subClasses = reflections.getSubTypesOf(Crypto.class);
         if (null != subClasses && subClasses.size() > 0) {
             //filter the abstract class
-            subClasses = subClasses.stream().filter( c -> !Modifier.isAbstract(c.getModifiers())).collect(Collectors.toSet());
+            subClasses = subClasses.stream().filter(c -> !Modifier.isAbstract(c.getModifiers())).collect(Collectors.toSet());
             cryptoMap = Maps.newHashMapWithExpectedSize(subClasses.size());
             for (Class<? extends Crypto> cryptoClass : subClasses) {
                 try {
@@ -52,9 +56,7 @@ public class CryptoFactory {
             throw new CryptoException("Crypto Impl Not Found !");
         }
         Crypto inst = cryptoMap.get(algorithm);
-        if (null == inst) {
-            throw new CryptoException("Algorithm Impl Not Found !");
-        }
+        Assert.notNull(inst, "Algorithm Impl Not Found !");
         return inst;
     }
 
