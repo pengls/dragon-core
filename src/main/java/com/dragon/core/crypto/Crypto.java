@@ -29,7 +29,7 @@ public interface Crypto {
      * @Date: 2020/3/27 20:59
      * @Version V1.0
      */
-    String encrypt(String data);
+    String encryptString(String data);
 
     /**
      * @MethodName: decryt
@@ -38,7 +38,7 @@ public interface Crypto {
      * @Date: 2020/3/27 20:59
      * @Version V1.0
      */
-    default String decrypt(String data){
+    default String decryptString(String data){
         throw new CryptoException("Unsupported Method !");
     }
 
@@ -49,7 +49,17 @@ public interface Crypto {
      * @Date: 2020/3/28 22:50
      * @Version V1.0
      */
-    String encrypt(CryptoParam param);
+    String encryptString(CryptoParam param);
+
+    /**
+     * @MethodName: encryptBytes
+     * @Description: return a byte[]
+     * @Author: pengl
+     * @Date: 2020/4/1 22:24
+     * @Version V1.0
+     */
+    byte[] encryptBytes(CryptoParam param);
+
 
     /**
      * @MethodName: decrypt
@@ -58,7 +68,18 @@ public interface Crypto {
      * @Date: 2020/3/28 23:16
      * @Version V1.0
      */
-    default String decrypt(CryptoParam param){
+    default String decryptString(CryptoParam param){
+        throw new CryptoException("Unsupported Method !");
+    }
+
+    /**
+     * @MethodName: decryptBytes
+     * @Description: return a byte[]
+     * @Author: pengl
+     * @Date: 2020/3/28 23:16
+     * @Version V1.0
+     */
+    default byte[] decryptBytes(CryptoParam param){
         throw new CryptoException("Unsupported Method !");
     }
 

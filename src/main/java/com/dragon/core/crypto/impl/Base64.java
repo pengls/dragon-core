@@ -14,23 +14,33 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Base64 implements Crypto {
     @Override
-    public String encrypt(String data) {
-        return encrypt(CryptoParam.builder().data(data).charset(DEFAULT_CHARSET).build());
+    public String encryptString(String data) {
+        return encryptString(CryptoParam.builder().data(data).charset(DEFAULT_CHARSET).build());
     }
 
     @Override
-    public String decrypt(String data) {
-        return decrypt(CryptoParam.builder().data(data).charset(DEFAULT_CHARSET).build());
+    public String decryptString(String data) {
+        return decryptString(CryptoParam.builder().data(data).charset(DEFAULT_CHARSET).build());
     }
 
     @Override
-    public String encrypt(CryptoParam builder) {
+    public String encryptString(CryptoParam builder) {
         return StringUtils.isBlank(builder.getData()) ? null : org.apache.commons.codec.binary.Base64.encodeBase64URLSafeString(builder.getData().getBytes(builder.getCharset()));
     }
 
     @Override
-    public String decrypt(CryptoParam builder) {
+    public byte[] encryptBytes(CryptoParam param) {
+        return org.apache.commons.codec.binary.Base64.encodeBase64URLSafe(param.getData().getBytes(param.getCharset()));
+    }
+
+    @Override
+    public String decryptString(CryptoParam builder) {
         return StringUtils.isBlank(builder.getData()) ? null : org.apache.commons.codec.binary.StringUtils.newString(org.apache.commons.codec.binary.Base64.decodeBase64(builder.getData().getBytes()), builder.getCharset().name());
+    }
+
+    @Override
+    public byte[] decryptBytes(CryptoParam param) {
+        return org.apache.commons.codec.binary.Base64.decodeBase64(param.getData().getBytes(param.getCharset()));
     }
 
     @Override

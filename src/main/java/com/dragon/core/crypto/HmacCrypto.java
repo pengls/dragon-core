@@ -15,17 +15,18 @@ import javax.crypto.Mac;
 public abstract class HmacCrypto implements Crypto{
 
     @Override
-    public String encrypt(String data) {
+    public String encryptString(String data) {
         warn();
-        return encrypt(CryptoParam.builder().data(data).key(DEFAULT_KEY).build());
+        return encryptString(CryptoParam.builder().data(data).key(DEFAULT_KEY).build());
     }
 
     @Override
-    public String encrypt(CryptoParam param) {
+    public String encryptString(CryptoParam param) {
         return mac(param);
     }
 
     private String mac(CryptoParam param) {
+        param.checkData();
         if(StringUtils.isBlank(param.getData())){
             return null;
         }

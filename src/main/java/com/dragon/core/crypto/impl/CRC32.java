@@ -15,12 +15,12 @@ import org.apache.commons.lang3.StringUtils;
 public class CRC32 implements Crypto {
 
     @Override
-    public String encrypt(String str) {
-        return encrypt(CryptoParam.builder().data(str).charset(DEFAULT_CHARSET).build());
+    public String encryptString(String str) {
+        return encryptString(CryptoParam.builder().data(str).charset(DEFAULT_CHARSET).build());
     }
 
     @Override
-    public String encrypt(CryptoParam builder) {
+    public String encryptString(CryptoParam builder) {
         String data = builder.getData();
         if(StringUtils.isBlank(data)){
             return null;

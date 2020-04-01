@@ -2,6 +2,7 @@ package com.dragon.core.crypto;
 
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
+
 import java.nio.charset.Charset;
 
 /**
@@ -14,6 +15,7 @@ import java.nio.charset.Charset;
 @Builder
 public class CryptoParam {
     private String data;
+    private byte[] bytes;
     private String key;
     private String iv;
     private Charset charset;
@@ -109,6 +111,14 @@ public class CryptoParam {
         this.salt = salt;
     }
 
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
+    }
+
     /**
      * @ClassName: CryptoParam
      * @Description: All must iv, But ECB
@@ -141,6 +151,12 @@ public class CryptoParam {
          * Every encrypted ciphertext 50% is the same
          */
         ISO10126Padding
+    }
+
+    public void checkData(){
+        if(StringUtils.isBlank(data) && bytes != null && bytes.length > 0){
+            this.setData(new String(bytes));
+        }
     }
 
 }

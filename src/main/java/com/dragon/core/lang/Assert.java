@@ -1,5 +1,6 @@
 package com.dragon.core.lang;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Collection;
@@ -266,13 +267,13 @@ public final class Assert {
     }
 
     public static void notEmpty(Collection<?> collection, String message) {
-        if (collection == null || collection.isEmpty()) {
+        if (CollectionUtils.isEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void notEmpty(Collection<?> collection, Supplier<String> messageSupplier) {
-        if (collection == null || collection.isEmpty()) {
+        if (CollectionUtils.isEmpty(collection)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
@@ -290,13 +291,13 @@ public final class Assert {
     }
 
     public static void isEmpty(Collection<?> collection, String message) {
-        if (collection != null && collection.size() > 0) {
+        if (CollectionUtils.isNotEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void isEmpty(Collection<?> collection, Supplier<String> messageSupplier) {
-        if (collection != null && collection.size() > 0) {
+        if (CollectionUtils.isNotEmpty(collection)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }

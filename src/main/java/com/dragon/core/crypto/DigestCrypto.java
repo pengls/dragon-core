@@ -16,12 +16,13 @@ import java.security.NoSuchAlgorithmException;
 public abstract class DigestCrypto implements Crypto{
 
     @Override
-    public String encrypt(String data) {
-        return encrypt(CryptoParam.builder().data(data).charset(DEFAULT_CHARSET).build());
+    public String encryptString(String data) {
+        return encryptString(CryptoParam.builder().data(data).charset(DEFAULT_CHARSET).build());
     }
 
     @Override
-    public String encrypt(CryptoParam param){
+    public String encryptString(CryptoParam param){
+        param.checkData();
         String data = param.getData();
         if(StringUtils.isBlank(data)){
             return null;

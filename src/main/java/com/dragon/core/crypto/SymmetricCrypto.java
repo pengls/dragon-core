@@ -51,29 +51,59 @@ public abstract class SymmetricCrypto implements Crypto {
     protected static final int IV_SIZE_8 = 8;
 
     @Override
-    public String encrypt(String data) {
+    public String encryptString(String data) {
         warn();
-        return encrypt(CryptoParam.builder().data(data).build());
+        return encryptString(CryptoParam.builder().data(data).build());
     }
 
     @Override
-    public String decrypt(String data) {
+    public String decryptString(String data) {
         warn();
-        return decrypt(CryptoParam.builder().data(data).build());
+        return decryptString(CryptoParam.builder().data(data).build());
     }
 
     @Override
-    public String decrypt(CryptoParam param) {
+    public byte[] decryptBytes(CryptoParam param) {
+        return cryptBts(param, 2);
+    }
+
+
+    @Override
+    public byte[] encryptBytes(CryptoParam param) {
+        return cryptBts(param, 1);
+    }
+
+
+    @Override
+    public String decryptString(CryptoParam param) {
         return crypt(param, 2);
     }
 
 
     @Override
-    public String encrypt(CryptoParam param) {
+    public String encryptString(CryptoParam param) {
         return crypt(param, 1);
     }
 
+    private byte[] cryptBts(CryptoParam param, int type) {
+        param.checkData();
+        String data = param.getData();
+        if (StringUtils.isBlank(data)) {
+            return null;
+        }
+        String key = StringUtils.isBlank(param.getKey()) ? (Algorithm.AES == current() ? DEFAULT_KEY_32 : DEFAULT_KEY_24) : param.getKey();
+        checkKeySize(key);
+        param.setKey(key);
+
+        String iv = StringUtils.isBlank(param.getIv()) ? (Algorithm.AES == current() ? DEFAULT_IV_16 : DEFAULT_IV_8) : param.getIv();
+        checkIvSize(iv);
+        param.setIv(iv);
+
+        return type == 1 ? encryBts(param) : decryBts(param);
+    }
+
     private String crypt(CryptoParam param, int type) {
+        param.checkData();
         String data = param.getData();
         if (StringUtils.isBlank(data)) {
             return null;
@@ -130,6 +160,28 @@ public abstract class SymmetricCrypto implements Crypto {
             Cipher cipher = Cipher.getInstance(current().getCode() + CIPHER_SEPARATOR + param.getWorkModel() + CIPHER_SEPARATOR + param.getPadding());
             initCipher(cipher, Cipher.DECRYPT_MODE, param);
             return new String(cipher.doFinal(mingwen), param.getCharset());
+        } catch (Exception e) {
+            throw new CryptoException(e.getMessage());
+        }
+    }
+
+    private byte[] encryBts(CryptoParam param) {
+        try {
+            Cipher cipher = Cipher.getInstance(current().getCode() + CIPHER_SEPARATOR + param.getWorkModel() + CIPHER_SEPARATOR + param.getPadding());
+            initCipher(cipher, Cipher.ENCRYPT_MODE, param);
+            return cipher.doFinal(param.getData().getBytes(param.getCharset()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CryptoException(e.getMessage());
+        }
+    }
+
+    private byte[] decryBts(CryptoParam param) {
+        try {
+            byte[] mingwen = Hex.decodeHex(param.getData());
+            Cipher cipher = Cipher.getInstance(current().getCode() + CIPHER_SEPARATOR + param.getWorkModel() + CIPHER_SEPARATOR + param.getPadding());
+            initCipher(cipher, Cipher.DECRYPT_MODE, param);
+            return cipher.doFinal(mingwen);
         } catch (Exception e) {
             throw new CryptoException(e.getMessage());
         }

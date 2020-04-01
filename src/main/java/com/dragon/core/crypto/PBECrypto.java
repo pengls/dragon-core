@@ -38,19 +38,20 @@ public abstract class PBECrypto implements Crypto {
     }
 
     @Override
-    public String encrypt(String data) {
+    public String encryptString(String data) {
         warn();
-        return encrypt(CryptoParam.builder().data(data).build());
+        return encryptString(CryptoParam.builder().data(data).build());
     }
 
     @Override
-    public String decrypt(String data) {
+    public String decryptString(String data) {
         warn();
-        return decrypt(CryptoParam.builder().data(data).build());
+        return decryptString(CryptoParam.builder().data(data).build());
     }
 
     @Override
-    public String encrypt(CryptoParam param) {
+    public String encryptString(CryptoParam param) {
+        param.checkData();
         if (StringUtils.isBlank(param.getData())) {
             return null;
         }
@@ -66,7 +67,7 @@ public abstract class PBECrypto implements Crypto {
     }
 
     @Override
-    public String decrypt(CryptoParam param) {
+    public String decryptString(CryptoParam param) {
         if (StringUtils.isBlank(param.getData())) {
             return null;
         }

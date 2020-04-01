@@ -26,19 +26,20 @@ public abstract class AsymmetricCrypto implements Crypto {
 
 
     @Override
-    public String encrypt(String data) {
+    public String encryptString(String data) {
         warn();
-        return encrypt(CryptoParam.builder().data(data).publicKey(DEFAULT_PUBLICK_KEY).build());
+        return encryptString(CryptoParam.builder().data(data).publicKey(DEFAULT_PUBLICK_KEY).build());
     }
 
     @Override
-    public String decrypt(String data) {
+    public String decryptString(String data) {
         warn();
-        return decrypt(CryptoParam.builder().data(data).privateKey(DEFAULT_PRIVATE_KEY).build());
+        return decryptString(CryptoParam.builder().data(data).privateKey(DEFAULT_PRIVATE_KEY).build());
     }
 
     @Override
-    public String decrypt(CryptoParam param) {
+    public String decryptString(CryptoParam param) {
+        param.checkData();
         if (StringUtils.isBlank(param.getData())) {
             return null;
         }
@@ -68,7 +69,7 @@ public abstract class AsymmetricCrypto implements Crypto {
 
 
     @Override
-    public String encrypt(CryptoParam param) {
+    public String encryptString(CryptoParam param) {
         if (StringUtils.isBlank(param.getData())) {
             return null;
         }
