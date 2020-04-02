@@ -12,6 +12,7 @@ import com.dragon.core.serialize.SerializeFactory;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -59,10 +60,6 @@ public class JwtToken implements Token, Serializable {
      * biz data
      */
     private Object data;
-    /**
-     * is expired
-     */
-    private boolean expired;
 
     @Override
     public String create() {
