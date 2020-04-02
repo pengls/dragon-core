@@ -260,6 +260,18 @@ public final class Assert {
         }
     }
 
+    public static void notEmpty(byte[] bytes, Supplier<String> messageSupplier) {
+        if (bytes == null || bytes.length == 0) {
+            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void notEmpty(byte[] bytes, String message) {
+        if (bytes == null || bytes.length == 0) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     public static void notEmpty(Object[] array, Supplier<String> messageSupplier) {
         if (ObjectUtils.isEmpty(array)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));

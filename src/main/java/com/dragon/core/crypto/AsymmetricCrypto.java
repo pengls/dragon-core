@@ -1,8 +1,7 @@
 package com.dragon.core.crypto;
 
-import org.apache.commons.codec.DecoderException;
+import com.dragon.core.lang.Assert;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
@@ -21,42 +20,38 @@ import java.security.spec.X509EncodedKeySpec;
  */
 public abstract class AsymmetricCrypto implements Crypto {
 
-    private static final String DEFAULT_PUBLICK_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDRSIxHVvhRsxfAv7-96XmeXIMl_ehWYI90KMV3BCGl3uFcr8zBaPTV3OhfE3zhQmG48IyUXV6DUkZYDUPmm6HCFfp--svqw9ju0U3TlzzykIvg5x5yRxrGAbVXQjgWKsbk6xRFzJRq3azHWz0qQ4QodA2SiTY8Y1aeHWqJqVRqeQIDAQAB";
-    private static final String DEFAULT_PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANFIjEdW-FGzF8C_v73peZ5cgyX96FZgj3QoxXcEIaXe4VyvzMFo9NXc6F8TfOFCYbjwjJRdXoNSRlgNQ-abocIV-n76y-rD2O7RTdOXPPKQi-DnHnJHGsYBtVdCOBYqxuTrFEXMlGrdrMdbPSpDhCh0DZKJNjxjVp4daompVGp5AgMBAAECgYAL3qZ-IVOiJpsxRm7UkZphPfP-QqFbzMw2FV3luylBZBu6Cwp86bwBKS9QvSU3DXHHcHU4sPb8Ub1FnzL7sFYDNsMTXcDq4P8D74vPbQHTlsbuNSOYXTdTs-qBU24ci2kZq7LeNlBIYcKtr8KmrLyhq3UtLS_AcKFhpvswnt3wNQJBAOwCZcaxz2lfiIrH6pf_DgtzKiOM7qWfk8Pi5yLehdWuysNZT5isuNPqr7spgeg5JUkskPyC-A8d77aRHw5NCPMCQQDjAqCM3AJKKJ3RLnGVktcvlvVu7_kSYoufH_jW3Zg3gNoeDRBuRmqdNefMIdDCGVO-EhGSa_DCkV6w5fqLs1njAkEA58Rm_FxLiniF13wB9mhD-5yKCkVxavauHtUqFQUfuzue5X5Ee3NLQtka4Bsf9tR_uD9q1n8raXUFnm0faWTfXwJAU9bIjL1EazcM8hCBCoisyHqsMkiWaF_UyPP55wD4EqeX5rlUdCW1glJCRXXHr6fC8dOigb0zsegWXKbTHX0jmQJBALVIPQPxJN_oxswZnrRGTAOjkCjKj3D2QAKt71oEqPqYo-76g7vHMX4HrBmU3UyCCNWUm_TBhgcJojJ9krbe6YE";
-
+    //private static final String DEFAULT_PUBLICK_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDRSIxHVvhRsxfAv7-96XmeXIMl_ehWYI90KMV3BCGl3uFcr8zBaPTV3OhfE3zhQmG48IyUXV6DUkZYDUPmm6HCFfp--svqw9ju0U3TlzzykIvg5x5yRxrGAbVXQjgWKsbk6xRFzJRq3azHWz0qQ4QodA2SiTY8Y1aeHWqJqVRqeQIDAQAB";
+    //private static final String DEFAULT_PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANFIjEdW-FGzF8C_v73peZ5cgyX96FZgj3QoxXcEIaXe4VyvzMFo9NXc6F8TfOFCYbjwjJRdXoNSRlgNQ-abocIV-n76y-rD2O7RTdOXPPKQi-DnHnJHGsYBtVdCOBYqxuTrFEXMlGrdrMdbPSpDhCh0DZKJNjxjVp4daompVGp5AgMBAAECgYAL3qZ-IVOiJpsxRm7UkZphPfP-QqFbzMw2FV3luylBZBu6Cwp86bwBKS9QvSU3DXHHcHU4sPb8Ub1FnzL7sFYDNsMTXcDq4P8D74vPbQHTlsbuNSOYXTdTs-qBU24ci2kZq7LeNlBIYcKtr8KmrLyhq3UtLS_AcKFhpvswnt3wNQJBAOwCZcaxz2lfiIrH6pf_DgtzKiOM7qWfk8Pi5yLehdWuysNZT5isuNPqr7spgeg5JUkskPyC-A8d77aRHw5NCPMCQQDjAqCM3AJKKJ3RLnGVktcvlvVu7_kSYoufH_jW3Zg3gNoeDRBuRmqdNefMIdDCGVO-EhGSa_DCkV6w5fqLs1njAkEA58Rm_FxLiniF13wB9mhD-5yKCkVxavauHtUqFQUfuzue5X5Ee3NLQtka4Bsf9tR_uD9q1n8raXUFnm0faWTfXwJAU9bIjL1EazcM8hCBCoisyHqsMkiWaF_UyPP55wD4EqeX5rlUdCW1glJCRXXHr6fC8dOigb0zsegWXKbTHX0jmQJBALVIPQPxJN_oxswZnrRGTAOjkCjKj3D2QAKt71oEqPqYo-76g7vHMX4HrBmU3UyCCNWUm_TBhgcJojJ9krbe6YE";
 
     @Override
-    public String encryptString(String data) {
-        warn();
-        return encryptString(CryptoParam.builder().data(data).publicKey(DEFAULT_PUBLICK_KEY).build());
+    public byte[] encrypt(CryptoParam param) {
+        return encry(param);
     }
 
     @Override
-    public String decryptString(String data) {
-        warn();
-        return decryptString(CryptoParam.builder().data(data).privateKey(DEFAULT_PRIVATE_KEY).build());
+    public byte[] decrypt(CryptoParam param) {
+        return decry(param);
     }
 
     @Override
-    public String decryptString(CryptoParam param) {
-        param.checkData();
-        if (StringUtils.isBlank(param.getData())) {
-            return null;
-        }
+    public byte[] encrypt(byte[] data) {
+        return encrypt(CryptoParam.builder().data(data).build());
+    }
+
+    @Override
+    public byte[] decrypt(byte[] data) {
+        return decrypt(CryptoParam.builder().data(data).build());
+    }
+
+    private byte[] decry(CryptoParam param) {
+        byte[] data = param.getData();
+        Assert.notEmpty(data, "data is null or empty");
         checkKey(param);
         if (StringUtils.isNotBlank(param.getPublicKey())) {
-            try {
-                return new String(decryptByPublicKey(Hex.decodeHex(param.getData()), Base64.decodeBase64(param.getPublicKey())), param.getCharset());
-            } catch (DecoderException e) {
-                throw new CryptoException(e.getMessage());
-            }
+            return decryptByPublicKey(param.getData(), Base64.decodeBase64(param.getPublicKey()));
         }
         if (StringUtils.isNotBlank(param.getPrivateKey())) {
-            try {
-                return new String(decryptByPrivateKey(Hex.decodeHex(param.getData()), Base64.decodeBase64(param.getPrivateKey())), param.getCharset());
-            } catch (DecoderException e) {
-                throw new CryptoException(e.getMessage());
-            }
+            return decryptByPrivateKey(param.getData(), Base64.decodeBase64(param.getPrivateKey()));
         }
         return null;
     }
@@ -67,17 +62,14 @@ public abstract class AsymmetricCrypto implements Crypto {
         }
     }
 
-
-    @Override
-    public String encryptString(CryptoParam param) {
-        if (StringUtils.isBlank(param.getData())) {
-            return null;
-        }
+    private byte[] encry(CryptoParam param) {
+        byte[] data = param.getData();
+        Assert.notEmpty(data, "data is null or empty");
         if (StringUtils.isNotBlank(param.getPublicKey())) {
-            return Hex.encodeHexString(encryptByPublicKey(param.getData().getBytes(param.getCharset()), Base64.decodeBase64(param.getPublicKey())));
+            return encryptByPublicKey(param.getData(), Base64.decodeBase64(param.getPublicKey()));
         }
         if (StringUtils.isNotBlank(param.getPrivateKey())) {
-            return Hex.encodeHexString(encryptByPrivateKey(param.getData().getBytes(param.getCharset()), Base64.decodeBase64(param.getPrivateKey())));
+            return encryptByPrivateKey(param.getData(), Base64.decodeBase64(param.getPrivateKey()));
         }
         return null;
     }

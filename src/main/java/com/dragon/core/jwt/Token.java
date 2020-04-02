@@ -24,7 +24,7 @@ public interface Token {
      * @Date: 2020/4/1 20:49
      * @Version V1.0
      */
-    boolean verify();
+    boolean verify(String jwt);
 
     /**
      * @MethodName: parse
@@ -33,7 +33,7 @@ public interface Token {
      * @Date: 2020/4/1 20:50
      * @Version V1.0
      */
-    Object parse(String jwt);
+    Object parse(String jwt, boolean checkExpire);
 
     /**
      * @MethodName: isExpire

@@ -2,8 +2,6 @@ package com.dragon.core.crypto;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @ClassName: Crypto
@@ -14,42 +12,9 @@ import java.nio.charset.StandardCharsets;
  */
 public interface Crypto {
     /**
-     * default charset
-     */
-    static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    /**
      * default key
      */
-    static final String DEFAULT_KEY = "asdi!@#$%^&*~()_+AYHB";
-
-    /**
-     * @MethodName: encryt
-     * @Description: encryt data
-     * @Author: pengl
-     * @Date: 2020/3/27 20:59
-     * @Version V1.0
-     */
-    String encryptString(String data);
-
-    /**
-     * @MethodName: decryt
-     * @Description: decryt data
-     * @Author: pengl
-     * @Date: 2020/3/27 20:59
-     * @Version V1.0
-     */
-    default String decryptString(String data){
-        throw new CryptoException("Unsupported Method !");
-    }
-
-    /**
-     * @MethodName: encrypt
-     * @Description: encrypt
-     * @Author: pengl
-     * @Date: 2020/3/28 22:50
-     * @Version V1.0
-     */
-    String encryptString(CryptoParam param);
+    String DEFAULT_KEY = "asdi!@#$%^&*~()_+AYHB";
 
     /**
      * @MethodName: encryptBytes
@@ -58,19 +23,9 @@ public interface Crypto {
      * @Date: 2020/4/1 22:24
      * @Version V1.0
      */
-    byte[] encryptBytes(CryptoParam param);
+    byte[] encrypt(CryptoParam param);
 
-
-    /**
-     * @MethodName: decrypt
-     * @Description: decrypt
-     * @Author: pengl
-     * @Date: 2020/3/28 23:16
-     * @Version V1.0
-     */
-    default String decryptString(CryptoParam param){
-        throw new CryptoException("Unsupported Method !");
-    }
+    byte[] encrypt(byte[] bytes);
 
     /**
      * @MethodName: decryptBytes
@@ -79,7 +34,11 @@ public interface Crypto {
      * @Date: 2020/3/28 23:16
      * @Version V1.0
      */
-    default byte[] decryptBytes(CryptoParam param){
+    default byte[] decrypt(CryptoParam param) {
+        throw new CryptoException("Unsupported Method !");
+    }
+
+    default byte[] decrypt(byte[] bytes) {
         throw new CryptoException("Unsupported Method !");
     }
 
@@ -93,11 +52,17 @@ public interface Crypto {
      */
     Algorithm current();
 
-    default SecretKey toKey(final String key){
+    /**
+     * default SecretKey
+     *
+     * @param key
+     * @return
+     */
+    default SecretKey toKey(final String key) {
         return new SecretKeySpec(key.getBytes(), current().getCode());
     }
 
-    default void warn(){
+    default void warn() {
     }
 
 }

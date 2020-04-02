@@ -1,6 +1,6 @@
 package com.dragon.core.crypto;
 
-import org.apache.commons.codec.binary.Hex;
+import com.dragon.core.lang.Assert;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Mac;
@@ -15,26 +15,24 @@ import javax.crypto.Mac;
 public abstract class HmacCrypto implements Crypto{
 
     @Override
-    public String encryptString(String data) {
-        warn();
-        return encryptString(CryptoParam.builder().data(data).key(DEFAULT_KEY).build());
-    }
-
-    @Override
-    public String encryptString(CryptoParam param) {
+    public byte[] encrypt(CryptoParam param) {
         return mac(param);
     }
 
-    private String mac(CryptoParam param) {
-        param.checkData();
-        if(StringUtils.isBlank(param.getData())){
-            return null;
-        }
+    @Override
+    public byte[] encrypt(byte[] data) {
+        return encrypt(CryptoParam.builder().data(data).build());
+    }
+
+
+    private byte[] mac(CryptoParam param) {
+        byte[] data = param.getData();
+        Assert.notEmpty(data, "data is null or empty");
         String key = StringUtils.isBlank(param.getKey()) ? DEFAULT_KEY : param.getKey();
         try {
             Mac mac = Mac.getInstance(current().getCode());
             mac.init(toKey(key));
-            return Hex.encodeHexString(mac.doFinal(param.getData().getBytes(param.getCharset())));
+            return mac.doFinal(param.getData());
         } catch (Exception e) {
             throw new CryptoException(e.getMessage());
         }

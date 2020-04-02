@@ -23,6 +23,7 @@
         <guava>28.2-jre</guava>
         <slf4j>1.7.25</slf4j>
         <lombok>1.18.12</lombok>
+        <fastjson>1.2.68</fastjson>
     </properties>
 
     <dependencies>
@@ -69,7 +70,11 @@
             <version>${lombok}</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson}</version>
+        </dependency>
 
     </dependencies>
 

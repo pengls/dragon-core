@@ -3,7 +3,7 @@ package com.dragon.core.crypto.impl;
 import com.dragon.core.crypto.Algorithm;
 import com.dragon.core.crypto.Crypto;
 import com.dragon.core.crypto.CryptoParam;
-import org.apache.commons.lang3.StringUtils;
+import com.dragon.core.lang.Assert;
 
 /**
  * @ClassName: CRC32
@@ -15,19 +15,17 @@ import org.apache.commons.lang3.StringUtils;
 public class CRC32 implements Crypto {
 
     @Override
-    public String encryptString(String str) {
-        return encryptString(CryptoParam.builder().data(str).charset(DEFAULT_CHARSET).build());
+    public byte[] encrypt(CryptoParam param) {
+        byte[] data = param.getData();
+        Assert.notEmpty(data, "data is null or empty");
+        java.util.zip.CRC32 crc32 = new java.util.zip.CRC32();
+        crc32.update(data);
+        return Long.toHexString(crc32.getValue()).getBytes();
     }
 
     @Override
-    public String encryptString(CryptoParam builder) {
-        String data = builder.getData();
-        if(StringUtils.isBlank(data)){
-            return null;
-        }
-        java.util.zip.CRC32 crc32 = new java.util.zip.CRC32();
-        crc32.update(data.getBytes(builder.getCharset()));
-        return Long.toHexString(crc32.getValue());
+    public byte[] encrypt(byte[] data) {
+        return encrypt(CryptoParam.builder().data(data).build());
     }
 
     @Override

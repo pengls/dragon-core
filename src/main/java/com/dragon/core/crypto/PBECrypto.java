@@ -1,6 +1,6 @@
 package com.dragon.core.crypto;
 
-import org.apache.commons.codec.binary.Hex;
+import com.dragon.core.lang.Assert;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
@@ -11,7 +11,7 @@ import javax.crypto.spec.PBEParameterSpec;
 
 /**
  * @ClassName: PBECrypto
- * @Description: PBECrypto
+ * @Description: 带口令(salt)的整合对称算法
  * @Author: pengl
  * @Date: 2020/3/28 16:48
  * @Version V1.0
@@ -38,46 +38,34 @@ public abstract class PBECrypto implements Crypto {
     }
 
     @Override
-    public String encryptString(String data) {
-        warn();
-        return encryptString(CryptoParam.builder().data(data).build());
+    public byte[] decrypt(CryptoParam param) {
+        return crypt(param, Cipher.DECRYPT_MODE);
     }
 
     @Override
-    public String decryptString(String data) {
-        warn();
-        return decryptString(CryptoParam.builder().data(data).build());
+    public byte[] encrypt(CryptoParam param) {
+        return crypt(param, Cipher.ENCRYPT_MODE);
     }
 
     @Override
-    public String encryptString(CryptoParam param) {
-        param.checkData();
-        if (StringUtils.isBlank(param.getData())) {
-            return null;
-        }
+    public byte[] decrypt(byte[] data) {
+        return crypt(CryptoParam.builder().data(data).build(), Cipher.DECRYPT_MODE);
+    }
+
+    @Override
+    public byte[] encrypt(byte[] data) {
+        return crypt(CryptoParam.builder().data(data).build(), Cipher.ENCRYPT_MODE);
+    }
+
+    private byte[] crypt(CryptoParam param, int mode) {
+        byte[] data = param.getData();
+        Assert.notEmpty(data, "data is null or empty");
         setDefault(param);
         PBEParameterSpec paramSpec = new PBEParameterSpec(param.getSalt().getBytes(), CYCLE_TIMES);
         try {
             Cipher cipher = Cipher.getInstance(current().getCode());
-            cipher.init(Cipher.ENCRYPT_MODE, toKey(param.getKey()), paramSpec);
-            return Hex.encodeHexString(cipher.doFinal(param.getData().getBytes(param.getCharset())));
-        } catch (Exception e) {
-            throw new CryptoException(e.getMessage());
-        }
-    }
-
-    @Override
-    public String decryptString(CryptoParam param) {
-        if (StringUtils.isBlank(param.getData())) {
-            return null;
-        }
-        setDefault(param);
-        PBEParameterSpec paramSpec = new PBEParameterSpec(param.getSalt().getBytes(), CYCLE_TIMES);
-        try {
-            byte[] mingwen = Hex.decodeHex(param.getData());
-            Cipher cipher = Cipher.getInstance(current().getCode());
-            cipher.init(Cipher.DECRYPT_MODE, toKey(param.getKey()), paramSpec);
-            return new String(cipher.doFinal(mingwen), param.getCharset());
+            cipher.init(mode, toKey(param.getKey()), paramSpec);
+            return cipher.doFinal(param.getData());
         } catch (Exception e) {
             throw new CryptoException(e.getMessage());
         }

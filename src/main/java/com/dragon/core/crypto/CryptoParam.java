@@ -14,11 +14,9 @@ import java.nio.charset.Charset;
  */
 @Builder
 public class CryptoParam {
-    private String data;
-    private byte[] bytes;
+    private byte[] data;
     private String key;
     private String iv;
-    private Charset charset;
 
     /**
      * AES/DES3 --> CBC/ECB...
@@ -39,20 +37,12 @@ public class CryptoParam {
      */
     private String salt;
 
-    public String getData() {
-        return data;
-    }
-
     public String getKey() {
         return key;
     }
 
     public String getIv() {
         return iv;
-    }
-
-    public Charset getCharset() {
-        return charset == null ? Crypto.DEFAULT_CHARSET : charset;
     }
 
     public WorkModel getWorkModel() {
@@ -75,20 +65,12 @@ public class CryptoParam {
         return salt;
     }
 
-    public void setData(String data) {
-        this.data = data;
-    }
-
     public void setKey(String key) {
         this.key = key;
     }
 
     public void setIv(String iv) {
         this.iv = iv;
-    }
-
-    public void setCharset(Charset charset) {
-        this.charset = charset;
     }
 
     public void setWorkModel(WorkModel workModel) {
@@ -111,12 +93,12 @@ public class CryptoParam {
         this.salt = salt;
     }
 
-    public byte[] getBytes() {
-        return bytes;
+    public byte[] getData() {
+        return data;
     }
 
-    public void setBytes(byte[] bytes) {
-        this.bytes = bytes;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
     /**
@@ -152,11 +134,4 @@ public class CryptoParam {
          */
         ISO10126Padding
     }
-
-    public void checkData(){
-        if(StringUtils.isBlank(data) && bytes != null && bytes.length > 0){
-            this.setData(new String(bytes));
-        }
-    }
-
 }

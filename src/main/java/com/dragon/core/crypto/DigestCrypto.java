@@ -1,7 +1,6 @@
 package com.dragon.core.crypto;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang3.StringUtils;
+import com.dragon.core.lang.Assert;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,18 +15,15 @@ import java.security.NoSuchAlgorithmException;
 public abstract class DigestCrypto implements Crypto{
 
     @Override
-    public String encryptString(String data) {
-        return encryptString(CryptoParam.builder().data(data).charset(DEFAULT_CHARSET).build());
+    public byte[] encrypt(CryptoParam param) {
+        byte[] data = param.getData();
+        Assert.notEmpty(data, "data is null or empty");
+        return getMessageDigest(current()).digest(data);
     }
 
     @Override
-    public String encryptString(CryptoParam param){
-        param.checkData();
-        String data = param.getData();
-        if(StringUtils.isBlank(data)){
-            return null;
-        }
-        return Hex.encodeHexString(getMessageDigest(current()).digest(data.getBytes(param.getCharset())));
+    public byte[] encrypt(byte[] data) {
+        return encrypt(CryptoParam.builder().data(data).build());
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.dragon.core.crypto;
 
+import com.dragon.core.lang.Assert;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 
@@ -51,63 +52,31 @@ public abstract class SymmetricCrypto implements Crypto {
     protected static final int IV_SIZE_8 = 8;
 
     @Override
-    public String encryptString(String data) {
-        warn();
-        return encryptString(CryptoParam.builder().data(data).build());
-    }
-
-    @Override
-    public String decryptString(String data) {
-        warn();
-        return decryptString(CryptoParam.builder().data(data).build());
-    }
-
-    @Override
-    public byte[] decryptBytes(CryptoParam param) {
-        return cryptBts(param, 2);
+    public byte[] decrypt(byte[] data) {
+        return crypt(CryptoParam.builder().data(data).build(), 2);
     }
 
 
     @Override
-    public byte[] encryptBytes(CryptoParam param) {
-        return cryptBts(param, 1);
+    public byte[] encrypt(byte[] data) {
+        return crypt(CryptoParam.builder().data(data).build(), 1);
     }
 
 
     @Override
-    public String decryptString(CryptoParam param) {
+    public byte[] decrypt(CryptoParam param) {
         return crypt(param, 2);
     }
 
 
     @Override
-    public String encryptString(CryptoParam param) {
+    public byte[] encrypt(CryptoParam param) {
         return crypt(param, 1);
     }
 
-    private byte[] cryptBts(CryptoParam param, int type) {
-        param.checkData();
-        String data = param.getData();
-        if (StringUtils.isBlank(data)) {
-            return null;
-        }
-        String key = StringUtils.isBlank(param.getKey()) ? (Algorithm.AES == current() ? DEFAULT_KEY_32 : DEFAULT_KEY_24) : param.getKey();
-        checkKeySize(key);
-        param.setKey(key);
-
-        String iv = StringUtils.isBlank(param.getIv()) ? (Algorithm.AES == current() ? DEFAULT_IV_16 : DEFAULT_IV_8) : param.getIv();
-        checkIvSize(iv);
-        param.setIv(iv);
-
-        return type == 1 ? encryBts(param) : decryBts(param);
-    }
-
-    private String crypt(CryptoParam param, int type) {
-        param.checkData();
-        String data = param.getData();
-        if (StringUtils.isBlank(data)) {
-            return null;
-        }
+    private byte[] crypt(CryptoParam param, int type) {
+        byte[] data = param.getData();
+        Assert.notEmpty(data, "data is null or empty");
         String key = StringUtils.isBlank(param.getKey()) ? (Algorithm.AES == current() ? DEFAULT_KEY_32 : DEFAULT_KEY_24) : param.getKey();
         checkKeySize(key);
         param.setKey(key);
@@ -143,45 +112,22 @@ public abstract class SymmetricCrypto implements Crypto {
         }
     }
 
-    private String encry(CryptoParam param) {
+    private byte[] encry(CryptoParam param) {
         try {
             Cipher cipher = Cipher.getInstance(current().getCode() + CIPHER_SEPARATOR + param.getWorkModel() + CIPHER_SEPARATOR + param.getPadding());
             initCipher(cipher, Cipher.ENCRYPT_MODE, param);
-            return Hex.encodeHexString(cipher.doFinal(param.getData().getBytes(param.getCharset())));
+            return cipher.doFinal(param.getData());
         } catch (Exception e) {
             e.printStackTrace();
             throw new CryptoException(e.getMessage());
         }
     }
 
-    private String decry(CryptoParam param) {
+    private byte[] decry(CryptoParam param) {
         try {
-            byte[] mingwen = Hex.decodeHex(param.getData());
             Cipher cipher = Cipher.getInstance(current().getCode() + CIPHER_SEPARATOR + param.getWorkModel() + CIPHER_SEPARATOR + param.getPadding());
             initCipher(cipher, Cipher.DECRYPT_MODE, param);
-            return new String(cipher.doFinal(mingwen), param.getCharset());
-        } catch (Exception e) {
-            throw new CryptoException(e.getMessage());
-        }
-    }
-
-    private byte[] encryBts(CryptoParam param) {
-        try {
-            Cipher cipher = Cipher.getInstance(current().getCode() + CIPHER_SEPARATOR + param.getWorkModel() + CIPHER_SEPARATOR + param.getPadding());
-            initCipher(cipher, Cipher.ENCRYPT_MODE, param);
-            return cipher.doFinal(param.getData().getBytes(param.getCharset()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new CryptoException(e.getMessage());
-        }
-    }
-
-    private byte[] decryBts(CryptoParam param) {
-        try {
-            byte[] mingwen = Hex.decodeHex(param.getData());
-            Cipher cipher = Cipher.getInstance(current().getCode() + CIPHER_SEPARATOR + param.getWorkModel() + CIPHER_SEPARATOR + param.getPadding());
-            initCipher(cipher, Cipher.DECRYPT_MODE, param);
-            return cipher.doFinal(mingwen);
+            return cipher.doFinal(param.getData());
         } catch (Exception e) {
             throw new CryptoException(e.getMessage());
         }

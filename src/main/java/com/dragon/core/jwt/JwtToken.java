@@ -5,13 +5,13 @@ import com.dragon.core.compression.CompressionException;
 import com.dragon.core.compression.CompressionFactory;
 import com.dragon.core.crypto.*;
 import com.dragon.core.lang.Assert;
+import com.dragon.core.lang.StrUtils;
 import com.dragon.core.serialize.Serialize;
 import com.dragon.core.serialize.SerializeException;
 import com.dragon.core.serialize.SerializeFactory;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,7 +26,7 @@ import java.util.Date;
 @Data
 @Builder
 public class JwtToken implements Token, Serializable {
-    private static final Crypto base64 =  CryptoFactory.getCrypto(Algorithm.Base64);
+    private static final Crypto base64 = CryptoFactory.getCrypto(Algorithm.Base64);
     /**
      * crypto algorithm
      */
@@ -59,7 +59,10 @@ public class JwtToken implements Token, Serializable {
      * biz data
      */
     private Object data;
-
+    /**
+     * is expired
+     */
+    private boolean expired;
 
     @Override
     public String create() {
@@ -73,47 +76,58 @@ public class JwtToken implements Token, Serializable {
         bytes = CompressionFactory.getCompression(compression).compress(bytes);
 
         //encrypt
-        String encrypt = CryptoFactory.getCrypto(Algorithm.valueOf(algorithm.toString())).encrypt(CryptoParam.builder().key(key).bytes(bytes).build());
+        byte[] encrypt = CryptoFactory.getCrypto(Algorithm.valueOf(algorithm.toString())).encrypt(CryptoParam.builder().key(key).data(bytes).build());
 
-        return encrypt;
+        return StrUtils.newStringUtf8(base64.encrypt(encrypt));
     }
 
     @Override
-    public boolean verify() {
-        return false;
+    public boolean verify(String jwt) {
+        try {
+            parse(jwt, true);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public Object parse(String jwt) {
+    public Object parse(String jwt, boolean checkExpire) {
         Assert.notBlank(key, "the crypto key is required");
         Assert.notBlank(jwt, "the jwt token is blank");
         setDefault();
         try {
             //base64 decode
-            //String decrypt = base64.decrypt(jwt);
+            byte[] data = base64.decrypt(jwt.getBytes());
 
             //decrypt
-            String decrypt = CryptoFactory.getCrypto(Algorithm.valueOf(algorithm.toString())).encrypt(CryptoParam.builder().key(key).data(jwt).build());
+            data = CryptoFactory.getCrypto(Algorithm.valueOf(algorithm.toString())).decrypt(CryptoParam.builder().key(key).data(data).build());
 
             //decompression
-            byte[] decryptBytes = CompressionFactory.getCompression(compression).decompress(decrypt.getBytes());
+            data = CompressionFactory.getCompression(compression).decompress(data);
 
             //deserialize
-            JwtToken jwtToken = (JwtToken)SerializeFactory.getSerializable(serialize).deserialize(decryptBytes);
+            JwtToken jwtToken = (JwtToken) SerializeFactory.getSerializable(serialize).deserialize(data);
 
             //check expired
-            checkExpire(jwtToken);
+            if (checkExpire && checkIsExpire(jwtToken)) {
+                log.warn("jwt token {} is expired !", jwtToken);
+                throw new JwtExpireException("token is expire");
+            }
 
             return jwtToken.getData();
 
-        }catch (CryptoException e){
-            e.printStackTrace();
+        } catch (CryptoException e) {
+            log.warn("jwt token parse exception, CryptoException : {}", e.getMessage(), e);
             throw new JwtInvalidException("invalid token string");
-        }catch (CompressionException e){
-            e.printStackTrace();
+        } catch (CompressionException e) {
+            log.warn("jwt token parse exception, CompressionException : {}", e.getMessage(), e);
             throw new JwtInvalidException("invalid token string");
-        }catch (SerializeException e){
-            e.printStackTrace();
+        } catch (SerializeException e) {
+            log.warn("jwt token parse exception, SerializeException : {}", e.getMessage(), e);
+            throw new JwtInvalidException("invalid token string");
+        } catch (Exception e) {
+            log.warn("jwt token parse exception, Exception : {}", e.getMessage(), e);
             throw new JwtInvalidException("invalid token string");
         }
     }
@@ -123,26 +137,29 @@ public class JwtToken implements Token, Serializable {
         return false;
     }
 
-    private void setDefault(){
+    private void setDefault() {
         algorithm = algorithm == null ? JwtAlgorithm.AES : algorithm;
         compression = compression == null ? Compression.DEFAULT : compression;
         serialize = serialize == null ? Serialize.JDK : serialize;
         this.createDate = new Date();
     }
 
-    private void checkExpire(JwtToken jwtToken){
+    private boolean checkIsExpire(JwtToken jwtToken) {
         Date expireDate = jwtToken.getExpireDate();
-        if(expireDate != null){
-            if(System.currentTimeMillis() > expireDate.getTime()){
-                throw new JwtExpireException("token is expired");
+        if (expireDate != null) {
+            if (System.currentTimeMillis() > expireDate.getTime()) {
+                return true;
             }
         }
 
         long expire = jwtToken.getExpire();
-        Date createDate = jwtToken.getCreateDate();
-        if(System.currentTimeMillis() > (createDate.getTime() + expire)){
-            throw new JwtExpireException("token is expired");
+        if (expire != 0) {
+            Date createDate = jwtToken.getCreateDate();
+            if (System.currentTimeMillis() > (createDate.getTime() + expire)) {
+                return true;
+            }
         }
+        return false;
     }
 
 }
