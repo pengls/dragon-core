@@ -3,6 +3,7 @@ package com.dragon.core.jwt;
 import com.alibaba.fastjson.JSON;
 import com.dragon.core.Stu;
 import com.dragon.core.compression.Compression;
+import com.dragon.core.serialize.Serialize;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +36,7 @@ public class JwtTest {
         String token = JwtToken.builder()
                 .data(stu)
                 .compression(Compression.GZIP)
+                .serialize(Serialize.JDK)
                 .algorithm(JwtAlgorithm.PBEWithSHA1AndDESede)
                 .key("abc12123112313213456778843213431")
                 .expire(3000)
@@ -45,7 +47,7 @@ public class JwtTest {
         System.out.println(JSON.toJSONString(stut));
 
         Thread.sleep(4000);
-        stut = (Stu)JwtToken.builder().compression(Compression.GZIP).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().parse(token, true);
+        JwtToken.builder().compression(Compression.GZIP).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().parse(token, true);
 
     }
 }
