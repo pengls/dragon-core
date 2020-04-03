@@ -70,7 +70,9 @@ public class JwtToken implements Token, Serializable {
         byte[] bytes = SerializeFactory.getSerializable(serialize).serialize(this);
 
         //compression
-        bytes = CompressionFactory.getCompression(compression).compress(bytes);
+        if(compression != null){
+            bytes = CompressionFactory.getCompression(compression).compress(bytes);
+        }
 
         //encrypt
         byte[] encrypt = CryptoFactory.getCrypto(Algorithm.valueOf(algorithm.toString())).encrypt(CryptoParam.builder().key(key).data(bytes).build());
@@ -101,14 +103,16 @@ public class JwtToken implements Token, Serializable {
             data = CryptoFactory.getCrypto(Algorithm.valueOf(algorithm.toString())).decrypt(CryptoParam.builder().key(key).data(data).build());
 
             //decompression
-            data = CompressionFactory.getCompression(compression).decompress(data);
+            if(compression != null){
+                data = CompressionFactory.getCompression(compression).decompress(data);
+            }
 
             //deserialize
             JwtToken jwtToken = (JwtToken) SerializeFactory.getSerializable(serialize).deserialize(data);
 
             //check expired
             if (checkExpire && checkIsExpire(jwtToken)) {
-                log.warn("jwt token {} is expired !", jwtToken);
+                log.warn("jwt token {} is expired !", jwt);
                 throw new JwtExpireException("token is expire");
             }
 
@@ -123,7 +127,10 @@ public class JwtToken implements Token, Serializable {
         } catch (SerializeException e) {
             log.warn("jwt token parse exception, SerializeException : {}", e.getMessage(), e);
             throw new JwtInvalidException("invalid token string");
-        } catch (Exception e) {
+        } catch (JwtExpireException e){
+            log.warn("jwt token {} is expired !", jwt);
+            throw new JwtExpireException("token is expire");
+        }catch (Exception e) {
             log.warn("jwt token parse exception, Exception : {}", e.getMessage(), e);
             throw new JwtInvalidException("invalid token string");
         }
@@ -136,7 +143,7 @@ public class JwtToken implements Token, Serializable {
 
     private void setDefault() {
         algorithm = algorithm == null ? JwtAlgorithm.AES : algorithm;
-        compression = compression == null ? Compression.DEFAULT : compression;
+        //compression = compression == null ? Compression.DEFAULT : compression;
         serialize = serialize == null ? Serialize.JDK : serialize;
         this.createDate = new Date();
     }
