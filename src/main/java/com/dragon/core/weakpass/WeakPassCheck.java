@@ -71,6 +71,7 @@ public class WeakPassCheck {
 
         for (WeakRule rule : rules) {
             RuleCheck ruleCheck = RuleCheckFactory.getRuleCheck(rule, this);
+            Assert.notNull(ruleCheck, "unsupported rule type");
             if (!ruleCheck.check()) {
                 return false;
             }

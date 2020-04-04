@@ -7,5 +7,6 @@ public enum RuleType {
     LOGIC_ORDER,
     PHYSICAL_ORDER,
     RANGE,
-    REGEX
+    REGEX,
+    DIC
 }

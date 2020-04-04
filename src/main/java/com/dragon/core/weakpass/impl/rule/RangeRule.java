@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @ClassName: RangeRule
- * @Description: 允许的区间规则：[a-z0-9A-Z]
+ * @Description: 允许的区间范围 //todo 暂不支持，可以通过RegexRule实现
  * @Author: pengl
  * @Date: 2020/4/3 22:10
  * @Version V1.0

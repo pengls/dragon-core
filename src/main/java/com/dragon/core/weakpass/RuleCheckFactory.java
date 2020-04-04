@@ -30,6 +30,10 @@ public abstract class RuleCheckFactory {
                 return new LogicOrderCheck(rule, weakPassCheck);
             case REGEX:
                 return new RegexCheck(rule, weakPassCheck);
+            case LOOP:
+                return new LoopCheck(rule, weakPassCheck);
+            case DIC:
+                return new LoopCheck(rule, weakPassCheck);
         }
 
         return null;

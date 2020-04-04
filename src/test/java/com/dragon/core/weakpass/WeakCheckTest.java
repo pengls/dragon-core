@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class WeakCheckTest {
     @Test
-    public void allTest(){
+    public void allTest() {
         String[] testPass = {
                 null,
                 "",
@@ -34,19 +34,19 @@ public class WeakCheckTest {
 
 
     @Test
-    public void tt1(){
+    public void tt1() {
         Map<Integer, String> errMap = Maps.newHashMap();
         boolean flag = WeakPassCheck.builder().rule(new LengthRule().min(8).max(20))
                 .throwException(false)
                 .errorMap(errMap)
                 .passData("1234").build().check();
-        if(!flag){
+        if (!flag) {
             System.out.println(errMap);
         }
     }
 
     @Test
-    public void tt2(){
+    public void tt2() {
         Map<Integer, String> errMap = Maps.newHashMap();
         boolean flag = WeakPassCheck.builder()
                 .rule(new LengthRule().min(8).max(20))
@@ -54,13 +54,13 @@ public class WeakCheckTest {
                 .throwException(false)
                 .errorMap(errMap)
                 .passData("1QAZ2WS1").build().check();
-        if(!flag){
+        if (!flag) {
             System.out.println(errMap);
         }
     }
 
     @Test
-    public void tt3(){
+    public void tt3() {
         Map<Integer, String> errMap = Maps.newHashMap();
         boolean flag = WeakPassCheck.builder()
                 .rule(new LengthRule().min(8).max(20))
@@ -68,13 +68,13 @@ public class WeakCheckTest {
                 .throwException(false)
                 .errorMap(errMap)
                 .passData("QqqqQ1231").build().check();
-        if(!flag){
+        if (!flag) {
             System.out.println(errMap);
         }
     }
 
     @Test
-    public void tt4(){
+    public void tt4() {
         Map<Integer, String> errMap = Maps.newHashMap();
         boolean flag = WeakPassCheck.builder()
                 .rule(new LengthRule().min(8).max(20))
@@ -82,26 +82,26 @@ public class WeakCheckTest {
                 .throwException(false)
                 .errorMap(errMap)
                 .passData("1234AbCDE4").build().check();
-        if(!flag){
+        if (!flag) {
             System.out.println(errMap);
         }
     }
 
     @Test
-    public void tt5(){
+    public void tt5() {
         Map<Integer, String> errMap = Maps.newHashMap();
         boolean flag = WeakPassCheck.builder()
                 .rule(new RegexRule().regex("\\d{8}"))
                 .throwException(false)
                 .errorMap(errMap)
                 .passData("12345671").build().check();
-        if(!flag){
+        if (!flag) {
             System.out.println(errMap);
         }
     }
 
     @Test
-    public void tt6(){
+    public void tt6() {
 
         String json = "[{\"ruleType\":\"RegexRule\",\"regex\":\".*?[a-z]+.*?\"},{\"ruleType\":\"RegexRule\",\"regex\":\".*?[A-Z]+.*?\"}]";
 
@@ -112,7 +112,39 @@ public class WeakCheckTest {
                 .throwException(false)
                 .errorMap(errMap)
                 .passData("A123A").build().check();
-        if(!flag){
+        if (!flag) {
+            System.out.println(errMap);
+        }
+
+    }
+
+    @Test
+    public void tt7() {
+
+        Map<Integer, String> errMap = Maps.newHashMap();
+
+        boolean flag = WeakPassCheck.builder()
+                .rule(new LoopRule().num(4).ignoreCase(true))
+                .throwException(false)
+                .errorMap(errMap)
+                .passData("WelcomeA123321a!2323").build().check();
+        if (!flag) {
+            System.out.println(errMap);
+        }
+
+    }
+
+    @Test
+    public void tt8() {
+
+        Map<Integer, String> errMap = Maps.newHashMap();
+
+        boolean flag = WeakPassCheck.builder()
+                .rule(new DicRule().dics("abc,poa,AAC").ignoreCase(true))
+                .throwException(false)
+                .errorMap(errMap)
+                .passData("ABC123").build().check();
+        if (!flag) {
             System.out.println(errMap);
         }
 

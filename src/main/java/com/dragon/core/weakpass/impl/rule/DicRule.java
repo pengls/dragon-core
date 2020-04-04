@@ -5,36 +5,36 @@ import com.dragon.core.weakpass.WeakRule;
 import lombok.Data;
 
 /**
- * @ClassName: LoopRule
- * @Description: 回文规则：ABCCBA
+ * @ClassName: DicRule
+ * @Description: 字典校验
  * @Author: pengl
- * @Date: 2020/4/3 22:09
+ * @Date: 2020/4/4 15:01
  * @Version V1.0
  */
 @Data
-public class LoopRule implements WeakRule {
+public class DicRule implements WeakRule {
     /**
-     * 回文位数
+     * 以逗号分隔的字典值
      */
-    private int num;
+    private String dicString;
+
     /**
      * 是否忽略大小写
      */
     private boolean ignoreCase;
 
-    public LoopRule num(int num) {
-        this.num = num;
+    public DicRule dics(String dicString) {
+        this.dicString = dicString;
         return this;
     }
 
-    public LoopRule ignoreCase(boolean ignoreCase) {
+    public DicRule ignoreCase(boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
         return this;
     }
 
-
     @Override
     public RuleType ruleType() {
-        return RuleType.LOOP;
+        return RuleType.DIC;
     }
 }
