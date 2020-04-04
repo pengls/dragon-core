@@ -1,4 +1,4 @@
-# dragon-core
+# dragon-core聚集java核心技术 ，重复造自己的轮子
 
 ------
 

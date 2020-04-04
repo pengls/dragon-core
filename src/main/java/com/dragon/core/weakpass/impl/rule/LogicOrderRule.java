@@ -14,11 +14,21 @@ import lombok.Data;
 @Data
 public class LogicOrderRule implements WeakRule {
     /**
-     * 允许相邻的位数
+     * 不允许逻辑相邻的最小个数
      */
-    private int nums;
-    public LogicOrderRule nums(int nums) {
-        this.nums = nums;
+    private int num;
+    /**
+     * 是否忽略大小写
+     */
+    private boolean ignoreCase;
+
+    public LogicOrderRule num(int num) {
+        this.num = num;
+        return this;
+    }
+
+    public LogicOrderRule ignoreCase(boolean ignoreCase) {
+        this.ignoreCase = ignoreCase;
         return this;
     }
 

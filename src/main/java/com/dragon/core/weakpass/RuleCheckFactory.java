@@ -1,7 +1,6 @@
 package com.dragon.core.weakpass;
 
-import com.dragon.core.weakpass.impl.check.LengthCheck;
-import com.dragon.core.weakpass.impl.check.PhysicalOrderCheck;
+import com.dragon.core.weakpass.impl.check.*;
 
 /**
  * @ClassName: RuleCheckFactory
@@ -19,12 +18,18 @@ public abstract class RuleCheckFactory {
      * @Date: 2020/4/3 22:16
      * @Version V1.0
      */
-    public static final RuleCheck getRuleCheck(RuleType ruleType, WeakPassCheck weakPassCheck) {
-        switch (ruleType) {
+    public static final RuleCheck getRuleCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
+        switch (rule.ruleType()) {
             case LENGTH:
-                return new LengthCheck(weakPassCheck);
+                return new LengthCheck(rule, weakPassCheck);
             case PHYSICAL_ORDER:
-                return new PhysicalOrderCheck(weakPassCheck);
+                return new PhysicalOrderCheck(rule, weakPassCheck);
+            case SAME:
+                return new SameCheck(rule, weakPassCheck);
+            case LOGIC_ORDER:
+                return new LogicOrderCheck(rule, weakPassCheck);
+            case REGEX:
+                return new RegexCheck(rule, weakPassCheck);
         }
 
         return null;

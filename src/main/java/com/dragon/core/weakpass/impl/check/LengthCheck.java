@@ -15,8 +15,8 @@ import java.text.MessageFormat;
  */
 public class LengthCheck extends AbstractRuleCheck {
 
-    public LengthCheck(WeakPassCheck weakPassCheck) {
-        super(weakPassCheck);
+    public LengthCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
+        super(rule, weakPassCheck);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class LengthCheck extends AbstractRuleCheck {
         String passData = weakPassCheck.getPassData();
         Assert.notBlank(passData, "password is blank");
         int passLength = passData.length();
-        LengthRule rule = (LengthRule) getWeakRule();
+        LengthRule rule = (LengthRule) weakRule;
         int min = rule.getMin();
         if (min > 0) {
             if (passLength < min) {

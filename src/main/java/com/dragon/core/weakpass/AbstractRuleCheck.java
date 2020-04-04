@@ -8,10 +8,11 @@ package com.dragon.core.weakpass;
  * @Version V1.0
  */
 public abstract class AbstractRuleCheck implements RuleCheck {
-
+    protected WeakRule weakRule;
     protected WeakPassCheck weakPassCheck;
 
-    public AbstractRuleCheck(WeakPassCheck weakPassCheck) {
+    public AbstractRuleCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
+        this.weakRule = rule;
         this.weakPassCheck = weakPassCheck;
     }
 
@@ -23,9 +24,5 @@ public abstract class AbstractRuleCheck implements RuleCheck {
         if (weakPassCheck.getErrorMap() != null) {
             weakPassCheck.getErrorMap().put(code, msg);
         }
-    }
-
-    protected WeakRule getWeakRule() {
-        return weakPassCheck.getRules().stream().filter(rule -> rule.ruleType() == ruleType()).findAny().get();
     }
 }

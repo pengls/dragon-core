@@ -24,14 +24,12 @@ import java.util.zip.InflaterOutputStream;
 
 /**
  * @ClassName: DeflateCompressionCodec
- * @Description: default
+ * @Description: jdk deflate压缩算法
  * @Author: pengl
  * @Date: 2020/4/1 20:22
  * @Version V1.0
  */
 public class DeflateCompressionCodec extends AbstractCompressionCodec {
-
-    private static final String DEFLATE = "DEF";
 
     private static final StreamWrapper WRAPPER = out -> new DeflaterOutputStream(out);
 

@@ -22,6 +22,8 @@ public abstract class CompressionFactory {
         switch (compression){
             case GZIP:
                 return new GzipCompressionCodec();
+            case DEFLATE:
+                return new DeflateCompressionCodec();
             default:
                 return new DeflateCompressionCodec();
         }

@@ -6,5 +6,6 @@ public enum RuleType {
     LOOP,
     LOGIC_ORDER,
     PHYSICAL_ORDER,
-    RANGE
+    RANGE,
+    REGEX
 }

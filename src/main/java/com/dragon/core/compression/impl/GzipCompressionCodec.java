@@ -19,18 +19,17 @@ import com.dragon.core.compression.AbstractCompressionCodec;
 import com.dragon.core.compression.CompressionCodec;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Codec implementing the <a href="https://en.wikipedia.org/wiki/Gzip">gzip compression algorithm</a>.
- *
- * @since 0.6.0
+ * @ClassName: GzipCompressionCodec
+ * @Description: jdk gzip压缩算法
+ * @Author: pengl
+ * @Date: 2020/4/4 9:13
+ * @Version V1.0
  */
 public class GzipCompressionCodec extends AbstractCompressionCodec implements CompressionCodec {
-
-    private static final String GZIP = "GZIP";
 
     private static final StreamWrapper WRAPPER = out -> new GZIPOutputStream(out);
 

@@ -1,30 +1,27 @@
 package com.dragon.core.weakpass.impl.check;
 
 import com.dragon.core.lang.Assert;
-import com.dragon.core.weakpass.AbstractRuleCheck;
-import com.dragon.core.weakpass.ErrorReturn;
-import com.dragon.core.weakpass.RuleType;
-import com.dragon.core.weakpass.WeakPassCheck;
+import com.dragon.core.weakpass.*;
 import com.dragon.core.weakpass.impl.rule.PhysicalOrderRule;
 
 /**
  * @ClassName: PhysicalOrderCheck
- * @Description: 物理键盘连续检测
+ * @Description: 物理键盘连续检测：横向、纵向
  * @Author: pengl
  * @Date: 2020/4/3 22:40
  * @Version V1.0
  */
 public class PhysicalOrderCheck extends AbstractRuleCheck {
 
-    public PhysicalOrderCheck(WeakPassCheck weakPassCheck) {
-        super(weakPassCheck);
+    public PhysicalOrderCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
+        super(rule, weakPassCheck);
     }
 
     @Override
     public boolean check() {
         String passData = weakPassCheck.getPassData();
         Assert.notBlank(passData, "password is blank");
-        PhysicalOrderRule rule = (PhysicalOrderRule) getWeakRule();
+        PhysicalOrderRule rule = (PhysicalOrderRule) weakRule;
         if (rule.getHorizontal_num() > 0) {
             if (checkKeyboard(passData, KEYBOARD_HORIZONTAL_ARR, 1, rule)) {
                 handleException(ErrorReturn.PHYSICAL_ORDER_CHECK_1.getCode(), ErrorReturn.PHYSICAL_ORDER_CHECK_1.getErrorMsg());

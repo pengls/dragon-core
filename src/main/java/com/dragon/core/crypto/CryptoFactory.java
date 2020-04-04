@@ -3,6 +3,7 @@ package com.dragon.core.crypto;
 import com.dragon.core.lang.Assert;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Modifier;
@@ -29,7 +30,7 @@ public final class CryptoFactory {
     static {
         Reflections reflections = new Reflections(PACKAGE_NAME);
         Set<Class<? extends Crypto>> subClasses = reflections.getSubTypesOf(Crypto.class);
-        if (null != subClasses && subClasses.size() > 0) {
+        if (CollectionUtils.isNotEmpty(subClasses)) {
             //filter the abstract class
             subClasses = subClasses.stream().filter(c -> !Modifier.isAbstract(c.getModifiers())).collect(Collectors.toSet());
             cryptoMap = Maps.newHashMapWithExpectedSize(subClasses.size());

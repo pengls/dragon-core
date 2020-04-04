@@ -14,16 +14,16 @@ import lombok.Data;
 @Data
 public class SameRule implements WeakRule {
     /**
-     * 允许重复的位数
+     * 不允许重复的最小个数
      */
-    private int nums;
+    private int num;
     /**
      * 是否忽略大小写
      */
     private boolean ignoreCase;
 
-    public SameRule nums(int nums) {
-        this.nums = nums;
+    public SameRule num(int num) {
+        this.num = num;
         return this;
     }
 

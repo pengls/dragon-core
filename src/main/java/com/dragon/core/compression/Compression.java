@@ -1,6 +1,8 @@
 package com.dragon.core.compression;
 
 public enum Compression {
-    DEFAULT,
+    DEFLATE,
+    LZ4,
+    SNAPPY,
     GZIP;
 }
