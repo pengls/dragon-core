@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @ClassName: DicRule
- * @Description: 字典校验
+ * @Description: 字典规则
  * @Author: pengl
  * @Date: 2020/4/4 15:01
  * @Version V1.0
