@@ -26,10 +26,10 @@ public class JdkSerialize implements Serializable {
     }
 
     @Override
-    public Object deserialize(byte[] data) {
+    public <T> T deserialize(byte[] data, Class<T> pvClass) {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         try (ObjectInputStream oos = new ObjectInputStream(bais)) {
-            return oos.readObject();
+            return (T)oos.readObject();
         } catch (IOException e) {
             throw new SerializeException(e.getMessage(), e);
         } catch (ClassNotFoundException e) {

@@ -108,7 +108,7 @@ public class JwtToken implements Token, Serializable {
             }
 
             //deserialize
-            JwtToken jwtToken = (JwtToken) SerializeFactory.getSerializable(serialize).deserialize(data);
+            JwtToken jwtToken = SerializeFactory.getSerializable(serialize).deserialize(data, JwtToken.class);
 
             //check expired
             if (checkExpire && checkIsExpire(jwtToken)) {

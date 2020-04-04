@@ -1,6 +1,7 @@
 package com.dragon.core.crypto;
 
 import com.dragon.core.lang.StrUtils;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -133,7 +134,7 @@ public class CryptoTest {
         System.out.println(encrypt);
         System.out.println(pbe.decryptString(CryptoParam.builder().data(encrypt).key(key).salt("12345678").build()));
 
-    }
+    }*/
 
     @Test
     public void rsaTest() {
@@ -141,16 +142,12 @@ public class CryptoTest {
         System.out.println("===========生成密钥对===========\n->PublickKey \n" + keyPairs.getPublicKey() + "\n->PrivateKey \n" + keyPairs.getPrivateKey());
         Crypto rsa = CryptoFactory.getCrypto(Algorithm.RSA);
         //公钥加密，私钥解密
-        String encry = rsa.encryptString(CryptoParam.builder().data(str).publicKey(keyPairs.getPublicKey()).build());
-        System.out.println("公钥加密：" + encry);
+        byte[] encry = rsa.encrypt(CryptoParam.builder().data(str.getBytes()).publicKey(keyPairs.getPublicKey()).build());
+        System.out.println("公钥加密：" + Hex.encodeHexString(encry));
 
-        String decry = rsa.decryptString(CryptoParam.builder().data(encry).privateKey(keyPairs.getPrivateKey()).build());
-        System.out.println("私钥解密：" + decry);
+        byte[] decry = rsa.decrypt(CryptoParam.builder().data(encry).privateKey(keyPairs.getPrivateKey()).build());
+        System.out.println("私钥解密：" + new String(decry));
 
-        //私钥加密，公钥解密
-        encry = rsa.encryptString(CryptoParam.builder().data(str).privateKey(keyPairs.getPrivateKey()).build());
-        System.out.println("私钥加密：" + encry);
-        decry = rsa.decryptString(CryptoParam.builder().data(encry).publicKey(keyPairs.getPublicKey()).build());
-        System.out.println("公钥解密：" + decry);
-    }*/
+
+    }
 }

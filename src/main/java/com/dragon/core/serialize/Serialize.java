@@ -1,5 +1,6 @@
 package com.dragon.core.serialize;
 
 public enum Serialize {
-    JDK;
+    JDK,
+    KRYO;
 }

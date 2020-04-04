@@ -1,5 +1,6 @@
 package com.dragon.core.compression;
 
+import com.dragon.core.compression.impl.CompressionProxy;
 import com.dragon.core.compression.impl.DeflateCompressionCodec;
 import com.dragon.core.compression.impl.GzipCompressionCodec;
 
@@ -18,14 +19,14 @@ public abstract class CompressionFactory {
      * @Date: 2020/4/1 20:40
      * @Version V1.0
      */
-    public static final CompressionCodec getCompression(Compression compression){
-        switch (compression){
+    public static final CompressionCodec getCompression(Compression compression) {
+        switch (compression) {
             case GZIP:
-                return new GzipCompressionCodec();
+                return new CompressionProxy(new GzipCompressionCodec());
             case DEFLATE:
-                return new DeflateCompressionCodec();
+                return new CompressionProxy(new DeflateCompressionCodec());
             default:
-                return new DeflateCompressionCodec();
+                return new CompressionProxy(new DeflateCompressionCodec());
         }
     }
 }

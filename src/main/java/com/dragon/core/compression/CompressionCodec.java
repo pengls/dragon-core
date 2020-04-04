@@ -24,4 +24,12 @@ public interface CompressionCodec {
      * @Version V1.0
      */
     byte[] decompress(byte[] compressed) throws CompressionException;
+    /**
+     * @MethodName: current
+     * @Description: who am i
+     * @Author: pengl
+     * @Date: 2020/4/4 20:43
+     * @Version V1.0
+     */
+    Compression current();
 }

@@ -25,6 +25,6 @@ public interface Serializable {
      * @Date: 2020/4/1 21:15
      * @Version V1.0
      */
-    Object deserialize(byte[] data);
+    <T> T deserialize(byte[] data, Class<T> pvClass);
 
 }

@@ -16,6 +16,7 @@
 package com.dragon.core.compression.impl;
 
 import com.dragon.core.compression.AbstractCompressionCodec;
+import com.dragon.core.compression.Compression;
 import com.dragon.core.lang.Objects;
 import java.io.*;
 import java.util.zip.DeflaterOutputStream;
@@ -64,5 +65,10 @@ public class DeflateCompressionCodec extends AbstractCompressionCodec {
         } finally {
             Objects.nullSafeClose(decompressedOutputStream, inflaterOutputStream);
         }
+    }
+
+    @Override
+    public Compression current() {
+        return Compression.DEFLATE;
     }
 }

@@ -8,6 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.NumberFormat;
+
 /**
  * @ClassName: JwtTest
  * @Description: TODO
@@ -35,7 +37,7 @@ public class JwtTest {
         Stu stu = new Stu("Z-01202323","hh",11);
         String token = JwtToken.builder()
                 .data(stu)
-                .compression(Compression.GZIP)
+                .compression(Compression.DEFLATE)
                 .serialize(Serialize.JDK)
                 .algorithm(JwtAlgorithm.PBEWithSHA1AndDESede)
                 .key("abc12123112313213456778843213431")
@@ -43,11 +45,11 @@ public class JwtTest {
                 .build().create();
         System.out.println(token);
         //System.out.println(JwtToken.builder().compression(Compression.GZIP).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().verify(token));
-        Stu stut = (Stu)JwtToken.builder().compression(Compression.GZIP).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().parse(token, true);
+        Stu stut = (Stu)JwtToken.builder().compression(Compression.DEFLATE).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().parse(token, true);
         System.out.println(JSON.toJSONString(stut));
 
-        Thread.sleep(4000);
-        JwtToken.builder().compression(Compression.GZIP).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().parse(token, true);
+        //Thread.sleep(4000);
+        //JwtToken.builder().compression(Compression.GZIP).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().parse(token, true);
 
     }
 }

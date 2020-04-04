@@ -16,6 +16,7 @@
 package com.dragon.core.compression.impl;
 
 import com.dragon.core.compression.AbstractCompressionCodec;
+import com.dragon.core.compression.Compression;
 import com.dragon.core.compression.CompressionCodec;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -41,5 +42,10 @@ public class GzipCompressionCodec extends AbstractCompressionCodec implements Co
     @Override
     protected byte[] doDecompress(byte[] compressed) throws IOException {
         return readAndClose(new GZIPInputStream(new ByteArrayInputStream(compressed)));
+    }
+
+    @Override
+    public Compression current() {
+        return Compression.GZIP;
     }
 }

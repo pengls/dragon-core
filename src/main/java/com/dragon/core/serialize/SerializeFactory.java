@@ -1,6 +1,7 @@
 package com.dragon.core.serialize;
 
 import com.dragon.core.serialize.impl.JdkSerialize;
+import com.dragon.core.serialize.impl.KryoSerialize;
 
 /**
  * @ClassName: SerializeFactory
@@ -15,6 +16,8 @@ public abstract class SerializeFactory {
         switch (serialize){
             case JDK:
                 return new JdkSerialize();
+            case KRYO:
+                return new KryoSerialize();
             default:
                 return new JdkSerialize();
         }
