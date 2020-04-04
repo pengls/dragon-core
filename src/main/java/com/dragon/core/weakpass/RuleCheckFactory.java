@@ -33,7 +33,7 @@ public abstract class RuleCheckFactory {
             case LOOP:
                 return new LoopCheck(rule, weakPassCheck);
             case DIC:
-                return new LoopCheck(rule, weakPassCheck);
+                return new DicCheck(rule, weakPassCheck);
         }
 
         return null;

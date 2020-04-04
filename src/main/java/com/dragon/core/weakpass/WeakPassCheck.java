@@ -63,6 +63,7 @@ public class WeakPassCheck {
 
     public boolean check() {
         Assert.notBlank(passData, "password is blank");
+
         addStringRules();
 
         if (CollectionUtils.isEmpty(rules)) {

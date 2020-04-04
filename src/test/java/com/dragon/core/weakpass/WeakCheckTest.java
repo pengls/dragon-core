@@ -16,19 +16,51 @@ public class WeakCheckTest {
     @Test
     public void allTest() {
         String[] testPass = {
-                null,
-                "",
-                "123456",
-                "12345678",
-                "abcdefgh",
-                "123abc456",
-                "1231adf@",
-                "12341adf@",
-                "fdahuier243335ddfa#$*&",
-                "aBcd1859d4!@",
-                "zaq13edfgt#",
-                "Bgt5sj4#"
+                "123456",  //长度不够
+                "ABC10OJS", //没有小写
+                "abc12sada", //没有大写
+                "12345678", //没有字母
+                "Adsw1342", //没有特殊字符
+                "aaaaa1Ac&", //相同字符5个
+                "aaaa1Ac%", //相同字符4个
+                "abcdefgh1G@", //排序
+                "asdfghj12QQ)", //物理键盘横向
+                "abcddcbaABC123@", //回文
+                "fuck123FUCK@", //字典
+                "qweas21QKS@"
         };
+
+        Map<Integer, String> errMap = Maps.newHashMap();
+        for (String password : testPass) {
+            try{
+                boolean flag = WeakPassCheck.builder()
+                        .rule(new LengthRule().min(8))
+                        .rule(new RegexRule().regex(".*[a-z]+.*"))
+                        .rule(new RegexRule().regex(".*[0-9]+.*"))
+                        .rule(new RegexRule().regex(".*[A-Z].*"))
+                        .rule(new RegexRule().regex(".*[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]+.*"))
+                        .rule(new SameRule().num(5).ignoreCase(true))
+                        .rule(new LogicOrderRule().num(5))
+                        .rule(new PhysicalOrderRule().horizontal_num(6))
+                        .rule(new LoopRule().num(4))
+                        .rule(new DicRule().dics("welcome,abcdef,fuck"))
+                        .passData(password)
+                        .throwException(false)
+                        .errorMap(errMap)
+                        .build().check();
+                if (!flag) {
+                    System.out.println(errMap);
+                    errMap.clear();
+                }else{
+                    System.out.println("SUCCESS ==>>> " + password);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                continue;
+            }
+
+        }
+
 
     }
 
