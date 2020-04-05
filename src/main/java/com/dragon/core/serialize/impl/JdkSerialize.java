@@ -29,7 +29,7 @@ public class JdkSerialize implements Serializable {
     public <T> T deserialize(byte[] data, Class<T> pvClass) {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         try (ObjectInputStream oos = new ObjectInputStream(bais)) {
-            return (T)oos.readObject();
+            return (T) oos.readObject();
         } catch (IOException e) {
             throw new SerializeException(e.getMessage(), e);
         } catch (ClassNotFoundException e) {

@@ -11,6 +11,7 @@ import lombok.Singular;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 import java.util.Map;
 
@@ -103,7 +104,7 @@ public class WeakPassCheck {
         List<WeakRule> newList = Lists.newArrayList(rules);
         rules = newList;
 
-        for (int i = 0; i < ruleArray.size(); i++) {
+        for (int i = 0, leg = ruleArray.size(); i < leg; i++) {
             JSONObject obj = ruleArray.getJSONObject(i);
             String ruleType = obj.getString("ruleType");
             if (StringUtils.isBlank(ruleType)) {

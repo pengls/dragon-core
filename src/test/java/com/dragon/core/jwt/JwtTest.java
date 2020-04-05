@@ -45,11 +45,12 @@ public class JwtTest {
                 .build().create();
         System.out.println(token);
         //System.out.println(JwtToken.builder().compression(Compression.GZIP).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().verify(token));
-        Stu stut = (Stu)JwtToken.builder().compression(Compression.DEFLATE).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().parse(token, true);
-        System.out.println(JSON.toJSONString(stut));
+        Stu stut = JwtToken.<Stu>builder().compression(Compression.DEFLATE).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").serialize(Serialize.JDK).build().parse(token, true);
+        System.out.println(stut.getUid() + "--" + stut.getName() + "--" + stu.getAge());
 
         //Thread.sleep(4000);
         //JwtToken.builder().compression(Compression.GZIP).algorithm(JwtAlgorithm.PBEWithSHA1AndDESede).key("abc12123112313213456778843213431").build().parse(token, true);
 
     }
+
 }

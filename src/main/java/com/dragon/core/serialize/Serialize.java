@@ -2,5 +2,6 @@ package com.dragon.core.serialize;
 
 public enum Serialize {
     JDK,
-    KRYO;
+    KRYO,
+    FAST_JSON;
 }

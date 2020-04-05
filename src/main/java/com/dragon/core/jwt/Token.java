@@ -7,7 +7,7 @@ package com.dragon.core.jwt;
  * @Date: 2020/4/1 20:47
  * @Version V1.0
  */
-public interface Token {
+public interface Token<T> {
     /**
      * @MethodName: create
      * @Description: create a token string
@@ -33,7 +33,7 @@ public interface Token {
      * @Date: 2020/4/1 20:50
      * @Version V1.0
      */
-    Object parse(String jwt, boolean checkExpire);
+    T parse(String jwt, boolean checkExpire);
 
     /**
      * @MethodName: isExpire

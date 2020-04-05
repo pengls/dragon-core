@@ -11,6 +11,7 @@ import com.dragon.core.serialize.SerializeException;
 import com.dragon.core.serialize.SerializeFactory;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
@@ -26,7 +27,7 @@ import java.util.Date;
 @Slf4j
 @Data
 @Builder
-public class JwtToken implements Token, Serializable {
+public class JwtToken<T> implements Token<T>, Serializable {
     private static final Crypto base64 = CryptoFactory.getCrypto(Algorithm.Base64);
     /**
      * crypto algorithm
@@ -59,7 +60,10 @@ public class JwtToken implements Token, Serializable {
     /**
      * biz data
      */
-    private Object data;
+    private T data;
+
+    @Tolerate
+    public JwtToken(){}
 
     @Override
     public String create() {
@@ -91,7 +95,7 @@ public class JwtToken implements Token, Serializable {
     }
 
     @Override
-    public Object parse(String jwt, boolean checkExpire) {
+    public T parse(String jwt, boolean checkExpire) {
         Assert.notBlank(key, "the crypto key is required");
         Assert.notBlank(jwt, "the jwt token is blank");
         setDefault();
@@ -108,7 +112,7 @@ public class JwtToken implements Token, Serializable {
             }
 
             //deserialize
-            JwtToken jwtToken = SerializeFactory.getSerializable(serialize).deserialize(data, JwtToken.class);
+            JwtToken<T> jwtToken = SerializeFactory.getSerializable(serialize).deserialize(data, JwtToken.class);
 
             //check expired
             if (checkExpire && checkIsExpire(jwtToken)) {

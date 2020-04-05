@@ -54,7 +54,7 @@ public class DicCheck extends AbstractRuleCheck {
 
         StringTokenizer tokenizer = new StringTokenizer(dicString, ",");
         while (tokenizer.hasMoreElements()) {
-            String ele = tokenizer.nextElement() + "";
+            String ele = tokenizer.nextElement().toString();
             if (password.indexOf(ele) != -1) {
                 return ele;
             }

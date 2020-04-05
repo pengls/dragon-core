@@ -25,6 +25,7 @@
         <lombok>1.18.12</lombok>
         <fastjson>1.2.68</fastjson>
         <kryo>5.0.0-RC1</kryo>
+        <gson>2.8.6</gson>
     </properties>
 
     <dependencies>
@@ -80,6 +81,11 @@
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
             <version>${kryo}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson}</version>
         </dependency>
 
         <!-- for debug -->

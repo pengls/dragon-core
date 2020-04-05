@@ -16,6 +16,9 @@ public class Stu implements Serializable {
     private int age;
     private Stu stu2;
 
+    public Stu(){}
+
+
     public Stu(String uid, String name, int age){
         this.uid = uid;
         this.name = name;

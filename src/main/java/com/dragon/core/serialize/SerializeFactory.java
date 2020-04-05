@@ -1,5 +1,6 @@
 package com.dragon.core.serialize;
 
+import com.dragon.core.serialize.impl.FastJsonSerialize;
 import com.dragon.core.serialize.impl.JdkSerialize;
 import com.dragon.core.serialize.impl.KryoSerialize;
 
@@ -18,6 +19,8 @@ public abstract class SerializeFactory {
                 return new JdkSerialize();
             case KRYO:
                 return new KryoSerialize();
+            case FAST_JSON:
+                return new FastJsonSerialize();
             default:
                 return new JdkSerialize();
         }
