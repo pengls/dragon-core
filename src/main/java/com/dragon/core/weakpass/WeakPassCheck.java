@@ -98,7 +98,7 @@ public class WeakPassCheck {
         }
 
         /**
-         * lombok在处理List的时候，会采用java.util.Collections里的内部List类：SingletonList/EmptyList
+         *， lombok在处理List的时候会采用java.util.Collections里的内部List类：SingletonList/EmptyList
          * 这里需要做一个转换，不然无法add元素到List中的
          */
         List<WeakRule> newList = Lists.newArrayList(rules);

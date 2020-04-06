@@ -46,12 +46,12 @@ public class CryptoTest {
 
     }
 
-   /* @Test
+   @Test
     public void md5Test() {
-        String encryt = CryptoFactory.getCrypto(Algorithm.MD5).encryptString(str);
-        System.out.println(encryt);
+        byte[] encryt = CryptoFactory.getCrypto(Algorithm.MD5).encrypt(str.getBytes());
+        System.out.println(Hex.encodeHexString(encryt));
     }
-
+ /*
     @Test
     public void shaTest() {
         System.out.println(CryptoFactory.getCrypto(Algorithm.SHA1).encryptString(str));

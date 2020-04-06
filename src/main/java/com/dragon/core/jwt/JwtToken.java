@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Hex;
 
 import java.io.Serializable;
 import java.util.Date;
