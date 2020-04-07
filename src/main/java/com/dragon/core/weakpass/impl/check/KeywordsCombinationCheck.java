@@ -4,6 +4,7 @@ import com.dragon.core.lang.Assert;
 import com.dragon.core.weakpass.*;
 import com.dragon.core.weakpass.impl.rule.DicRule;
 import com.dragon.core.weakpass.impl.rule.KeywordsCombinationRule;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,14 +19,17 @@ import java.util.StringTokenizer;
  * @Date: 2020/4/7 21:50
  * @Version V1.0
  */
+@Slf4j
 public class KeywordsCombinationCheck extends AbstractRuleCheckStrategy {
 
     @Override
     public RuleCheckResult check(String passData, WeakRule weakRule) {
         Assert.notBlank(passData, "password is blank");
         KeywordsCombinationRule rule = (KeywordsCombinationRule) weakRule;
-
-        return null;
+        if (checkKeywordsCombination(passData, rule)) {
+            return new RuleCheckResult(false, ErrorReturn.KEYWORDS_CHECK_1.getCode(), ErrorReturn.KEYWORDS_CHECK_1.getErrorMsg());
+        }
+        return new RuleCheckResult();
     }
 
     private boolean checkKeywordsCombination(String password, KeywordsCombinationRule rule) {
@@ -52,6 +56,7 @@ public class KeywordsCombinationCheck extends AbstractRuleCheckStrategy {
             String ele = tokenizer.nextElement().toString();
             if (password.startsWith(ele)) {
                 keyword = ele;
+                break;
             }
         }
 
@@ -60,11 +65,18 @@ public class KeywordsCombinationCheck extends AbstractRuleCheckStrategy {
         }
 
         int n = password.length();
-        password = password.substring(n - keyword.length() , n);
-        System.out.println("截取后密码：" + password);
+        password = password.substring(keyword.length(), n);
 
-        for(WeakRule weakRule : rules){
-
+        for (WeakRule weakRule : rules) {
+            RuleCheckStrategy ruleCheck = RuleCheckStrategyFactory.getRuleCheckStrategy(weakRule);
+            if (null == ruleCheck) {
+                log.error("未找到对应规则的检查策略：{}", rule.ruleType().toString());
+                continue;
+            }
+            RuleCheckResult rs = ruleCheck.check(password, weakRule);
+            if (!rs.isFlag()) {
+                return true;
+            }
         }
 
         return false;

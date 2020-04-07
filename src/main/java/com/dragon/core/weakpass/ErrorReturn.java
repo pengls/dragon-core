@@ -11,7 +11,8 @@ public enum ErrorReturn {
     LOGIC_ORDER_CHECK_2(1007, "不能使用顺序的字符！"),
     REGEX_CHECK_1(1008, "格式不符合规范！"),
     LOOP_CHECK_1(1009, "存在{0}位的回文格式！"),
-    DIC_CHECK_1(1010, "不能使用常见的弱密码字符串:{0}");
+    DIC_CHECK_1(1010, "不能使用常见的弱密码字符串:{0}"),
+    KEYWORDS_CHECK_1(1011, "密码强度较低");
 
     private int code;
     private String errorMsg;

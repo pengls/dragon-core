@@ -26,7 +26,9 @@ public class WeakCheckTest {
                 "abcdefgh1G@", //排序
                 "asdfghj12QQ)", //物理键盘横向
                 "abcddcbaABC123@", //回文
-                "fuck123FUCK@", //字典
+                "admin123!", //字典
+                "Zoom1234@", //关键词组合
+                "Spring999!", //关键词组合
                 "qweas21QKS@"
         };
 
@@ -43,7 +45,8 @@ public class WeakCheckTest {
                         .rule(new LogicOrderRule().num(5))
                         .rule(new PhysicalOrderRule().horizontal_num(6))
                         .rule(new LoopRule().num(4))
-                        .rule(new DicRule().dics("welcome,abcdef,fuck"))
+                        .rule(new DicRule().dics("admin123!"))
+                        .rule(new KeywordsCombinationRule().keywords("welcome,zoom,spring").rule(new LogicOrderRule().num(3)).rule(new SameRule().num(3).ignoreCase(true)))
                         .passData(password)
                         .throwException(false)
                         .errorMap(errMap)
@@ -179,6 +182,15 @@ public class WeakCheckTest {
         if (!flag) {
             System.out.println(errMap);
         }
+    }
+
+    @Test
+    public void tt9(){
+        WeakPassCheck.builder().passData("Zoom1234")
+                .rule(new KeywordsCombinationRule().keywords("welcome,zoom,spring").rule(new LogicOrderRule().num(3)).rule(new SameRule().num(3).ignoreCase(true)))
+                .throwException(true)
+                .build()
+                .check();
 
     }
 }
