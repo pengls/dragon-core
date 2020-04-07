@@ -14,28 +14,20 @@ import java.text.MessageFormat;
  * @Version V1.0
  */
 public class LengthCheck extends AbstractRuleCheckStrategy {
-
-    public LengthCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
-        super(rule, weakPassCheck);
-    }
-
     @Override
-    public boolean check() {
-        String passData = weakPassCheck.getPassData();
+    public RuleCheckResult check(String passData, WeakRule weakRule) {
         Assert.notBlank(passData, "password is blank");
         int passLength = passData.length();
         LengthRule rule = (LengthRule) weakRule;
         int min = rule.getMin();
         if (min > 0 && passLength < min) {
-            handleException(ErrorReturn.LENGTH_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LENGTH_CHECK_1.getErrorMsg(), min));
-            return false;
+            return new RuleCheckResult(false, ErrorReturn.LENGTH_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LENGTH_CHECK_1.getErrorMsg(), min));
         }
 
         int max = rule.getMax();
         if (max > 0 && passLength > max) {
-            handleException(ErrorReturn.LENGTH_CHECK_2.getCode(), MessageFormat.format(ErrorReturn.LENGTH_CHECK_2.getErrorMsg(), max));
-            return false;
+            return new RuleCheckResult(false, ErrorReturn.LENGTH_CHECK_2.getCode(), MessageFormat.format(ErrorReturn.LENGTH_CHECK_2.getErrorMsg(), max));
         }
-        return true;
+        return new RuleCheckResult();
     }
 }

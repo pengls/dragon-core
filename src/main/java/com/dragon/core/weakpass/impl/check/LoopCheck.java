@@ -16,20 +16,14 @@ import java.util.Locale;
  */
 public class LoopCheck extends AbstractRuleCheckStrategy {
 
-    public LoopCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
-        super(rule, weakPassCheck);
-    }
-
     @Override
-    public boolean check() {
-        String passData = weakPassCheck.getPassData();
+    public RuleCheckResult check(String passData, WeakRule weakRule) {
         Assert.notBlank(passData, "password is blank");
         LoopRule rule = (LoopRule) weakRule;
         if (checkLoop(passData, rule)) {
-            handleException(ErrorReturn.LOOP_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LOOP_CHECK_1.getErrorMsg(), rule.getNum()));
-            return false;
+            return new RuleCheckResult(false, ErrorReturn.LOOP_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LOOP_CHECK_1.getErrorMsg(), rule.getNum()));
         }
-        return true;
+        return new RuleCheckResult();
     }
 
     private boolean checkLoop(String password, LoopRule rule) {

@@ -17,22 +17,15 @@ import java.util.StringTokenizer;
  * @Version V1.0
  */
 public class DicCheck extends AbstractRuleCheckStrategy {
-
-    public DicCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
-        super(rule, weakPassCheck);
-    }
-
     @Override
-    public boolean check() {
-        String passData = weakPassCheck.getPassData();
+    public RuleCheckResult check(String passData, WeakRule weakRule) {
         Assert.notBlank(passData, "password is blank");
         DicRule rule = (DicRule) weakRule;
         String res = checkDics(passData, rule);
         if (null != res) {
-            handleException(ErrorReturn.DIC_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.DIC_CHECK_1.getErrorMsg(), res));
-            return false;
+            return new RuleCheckResult(false, ErrorReturn.DIC_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.DIC_CHECK_1.getErrorMsg(), res));
         }
-        return true;
+        return new RuleCheckResult();
     }
 
     private String checkDics(String password, DicRule rule) {

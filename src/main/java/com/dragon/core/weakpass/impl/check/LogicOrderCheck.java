@@ -16,25 +16,14 @@ import java.util.function.Consumer;
  * @Version V1.0
  */
 public class LogicOrderCheck extends AbstractRuleCheckStrategy {
-
-    public LogicOrderCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
-        super(rule, weakPassCheck);
-    }
-
     @Override
-    public boolean check() {
-        String passData = weakPassCheck.getPassData();
+    public RuleCheckResult check(String passData, WeakRule weakRule) {
         Assert.notBlank(passData, "password is blank");
         LogicOrderRule rule = (LogicOrderRule) weakRule;
-        if (checkSequentialOrderChars(passData, rule, (r -> handleException(r.getCode(), MessageFormat.format(r.getErrorMsg(), rule.getNum()))))) {
-            handleException(ErrorReturn.LOGIC_ORDER_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LOGIC_ORDER_CHECK_1.getErrorMsg(), rule.getNum()));
-            return false;
-        }
-        return true;
+        return checkSequentialOrderChars(passData, rule);
     }
 
-    private boolean checkSequentialOrderChars(String password, LogicOrderRule rule, Consumer<ErrorReturn> consumer) {
-        boolean flag = false;
+    private RuleCheckResult checkSequentialOrderChars(String password, LogicOrderRule rule) {
         int n = password.length();
         int limit_num = rule.getNum();
         limit_num = limit_num <= 0 ? n : limit_num;
@@ -50,20 +39,25 @@ public class LogicOrderCheck extends AbstractRuleCheckStrategy {
                 if (pwdCharArr[i + j + 1] - pwdCharArr[i + j] == 1) {
                     normal_count++;
                     if (normal_count == limit_num - 1) {
-                        consumer.accept(limit_num == n ? ErrorReturn.LOGIC_ORDER_CHECK_2 : ErrorReturn.LOGIC_ORDER_CHECK_1);
-                        return true;
+                        return handle(limit_num, n);
                     }
                 }
 
                 if (pwdCharArr[i + j] - pwdCharArr[i + j + 1] == 1) {
                     reversed_count++;
                     if (reversed_count == limit_num - 1) {
-                        consumer.accept(limit_num == n ? ErrorReturn.LOGIC_ORDER_CHECK_2 : ErrorReturn.LOGIC_ORDER_CHECK_1);
-                        return true;
+                        return handle(limit_num, n);
                     }
                 }
             }
         }
-        return flag;
+        return new RuleCheckResult();
+    }
+
+    private RuleCheckResult handle(int limit_num, int n){
+        return limit_num == n ?
+                new RuleCheckResult(false, ErrorReturn.LOGIC_ORDER_CHECK_2.getCode(), ErrorReturn.LOGIC_ORDER_CHECK_2.getErrorMsg())
+                :
+                new RuleCheckResult(false, ErrorReturn.LOGIC_ORDER_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LOGIC_ORDER_CHECK_1.getErrorMsg(), limit_num));
     }
 }

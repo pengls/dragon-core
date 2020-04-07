@@ -10,8 +10,13 @@ import com.dragon.core.lang.BaseException;
  * @Version V1.0
  */
 public class WeakCheckException extends BaseException {
+
     public WeakCheckException(String errorMsg) {
-        super(errorMsg);
+        super(-1, errorMsg);
+    }
+
+    public WeakCheckException(int code, String errorMsg) {
+        super(code, errorMsg);
     }
 
     public WeakCheckException(String errorMsg, Throwable thr) {

@@ -1,10 +1,8 @@
 package com.dragon.core.weakpass;
 
-import com.dragon.core.lang.Assert;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.reflections.Reflections;
-
 import java.util.Map;
 import java.util.Set;
 

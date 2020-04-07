@@ -13,30 +13,25 @@ import com.dragon.core.weakpass.impl.rule.PhysicalOrderRule;
  */
 public class PhysicalOrderCheck extends AbstractRuleCheckStrategy {
 
-    public PhysicalOrderCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
-        super(rule, weakPassCheck);
-    }
-
     @Override
-    public boolean check() {
-        String passData = weakPassCheck.getPassData();
+    public RuleCheckResult check(String passData, WeakRule weakRule) {
         Assert.notBlank(passData, "password is blank");
         PhysicalOrderRule rule = (PhysicalOrderRule) weakRule;
         if (checkKeyboard(passData, KEYBOARD_HORIZONTAL_ARR, 1, rule)) {
-            handleException(ErrorReturn.PHYSICAL_ORDER_CHECK_1.getCode(), ErrorReturn.PHYSICAL_ORDER_CHECK_1.getErrorMsg());
-            return false;
+            return new RuleCheckResult(false, ErrorReturn.PHYSICAL_ORDER_CHECK_1.getCode(), ErrorReturn.PHYSICAL_ORDER_CHECK_1.getErrorMsg());
         }
         if (checkKeyboard(passData, KEYBOARD_SLOPE_ARR, 2, rule)) {
-            handleException(ErrorReturn.PHYSICAL_ORDER_CHECK_2.getCode(), ErrorReturn.PHYSICAL_ORDER_CHECK_2.getErrorMsg());
-            return false;
+            return new RuleCheckResult(false, ErrorReturn.PHYSICAL_ORDER_CHECK_2.getCode(), ErrorReturn.PHYSICAL_ORDER_CHECK_2.getErrorMsg());
+
         }
-        return true;
+        return new RuleCheckResult();
     }
 
     /**
      * 键盘横向方向规则
      */
     private static final String[] KEYBOARD_HORIZONTAL_ARR = {
+            "!@#$%^&*()",
             "01234567890",
             "qwertyuiop",
             "asdfghjkl",

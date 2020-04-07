@@ -6,7 +6,6 @@ import com.dragon.core.weakpass.impl.rule.SameRule;
 
 import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.function.Consumer;
 
 /**
  * @ClassName: SameCheck
@@ -17,25 +16,16 @@ import java.util.function.Consumer;
  */
 public class SameCheck extends AbstractRuleCheckStrategy {
 
-    public SameCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
-        super(rule, weakPassCheck);
-    }
-
     @Override
-    public boolean check() {
-        String passData = weakPassCheck.getPassData();
+    public RuleCheckResult check(String passData, WeakRule weakRule) {
         Assert.notBlank(passData, "password is blank");
         SameRule rule = (SameRule) weakRule;
-        if (checkSequentialSameChars(passData, rule, (r -> handleException(r.getCode(), MessageFormat.format(r.getErrorMsg(), rule.getNum()))))) {
-            return false;
-        }
-        return true;
+        return checkSequentialSameChars(passData, rule);
     }
 
-    private boolean checkSequentialSameChars(String password, SameRule rule, Consumer<ErrorReturn> consumer) {
+    private RuleCheckResult checkSequentialSameChars(String password, SameRule rule) {
         int n = password.length();
         char[] pwdCharArr = rule.isIgnoreCase() ? password.toLowerCase(Locale.ENGLISH).toCharArray() : password.toCharArray();
-        boolean flag = false;
         int limit_num = rule.getNum();
         limit_num = limit_num <= 0 ? n : limit_num;
         int count;
@@ -45,12 +35,14 @@ public class SameCheck extends AbstractRuleCheckStrategy {
                 if (pwdCharArr[i + j] == pwdCharArr[i + j + 1]) {
                     count++;
                     if (count == limit_num - 1) {
-                        consumer.accept(limit_num == n ? ErrorReturn.SAME_CHECK_2 : ErrorReturn.SAME_CHECK_1);
-                        return true;
+                        return limit_num == n ?
+                                new RuleCheckResult(false, ErrorReturn.SAME_CHECK_2.getCode(), ErrorReturn.SAME_CHECK_2.getErrorMsg())
+                                :
+                                new RuleCheckResult(false, ErrorReturn.SAME_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.SAME_CHECK_1.getErrorMsg(), rule.getNum()));
                     }
                 }
             }
         }
-        return flag;
+        return new RuleCheckResult();
     }
 }

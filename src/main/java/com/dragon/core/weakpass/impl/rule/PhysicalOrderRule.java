@@ -14,19 +14,13 @@ import lombok.Data;
 @Data
 public class PhysicalOrderRule implements WeakRule {
     /**
-     * 横向不允许的最小连续个数， 如果不传或传入0，表示不验证此项
+     * 横向不允许的最小连续个数
      */
     private int horizontal_num;
     /**
-     * 斜向不允许的最小连续个数， 如果不传或传入0，表示不验证此项
+     * 斜向不允许的最小连续个数
      */
     private int slope_num;
-
-    /**
-     * 是否忽略大小写
-     * TODO 不考虑此规则，要么全部大小，要么全部小写，如果是大小写混写的，不算作弱密码
-     */
-    //private boolean ignoreCase;
 
     public PhysicalOrderRule horizontal_num(int horizontal_num) {
         this.horizontal_num = horizontal_num;
@@ -37,11 +31,6 @@ public class PhysicalOrderRule implements WeakRule {
         this.slope_num = slope_num;
         return this;
     }
-
-    /*public PhysicalOrderRule ignoreCase(boolean ignoreCase) {
-        this.ignoreCase = ignoreCase;
-        return this;
-    }*/
 
     @Override
     public RuleType ruleType() {

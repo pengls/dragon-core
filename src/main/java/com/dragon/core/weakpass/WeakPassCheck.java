@@ -61,7 +61,9 @@ public class WeakPassCheck {
     private String ruleString;
 
     public boolean check() {
-        Assert.notBlank(passData, "password is blank");
+        if (StringUtils.isBlank(passData)) {
+            handleException(-1, "password is blank");
+        }
 
         addStringRules();
 
@@ -73,9 +75,11 @@ public class WeakPassCheck {
             if (null == rule) {
                 continue;
             }
-            RuleCheckStrategy ruleCheck = RuleCheckStrategyFactory.getRuleCheckStrategy(rule, this);
-            Assert.notNull(ruleCheck, "未找到对应规则的实现策略：" + rule.ruleType().toString());
-            if (!ruleCheck.check()) {
+            RuleCheckStrategy ruleCheck = RuleCheckStrategyFactory.getRuleCheckStrategy(rule);
+            Assert.notNull(ruleCheck, "未找到对应规则的检查策略：" + rule.ruleType().toString());
+            RuleCheckResult rs = ruleCheck.check(passData, rule);
+            if (!rs.isFlag()) {
+                handleException(rs.getCode(), rs.getMsg());
                 return false;
             }
         }
@@ -123,6 +127,15 @@ public class WeakPassCheck {
                 log.error("[弱密码校验]规则字符串解析异常：{}", e.getMessage(), e);
                 continue;
             }
+        }
+    }
+
+    private void handleException(int code, String msg) {
+        if (throwException) {
+            throw new WeakCheckException(code, msg);
+        }
+        if (errorMap != null) {
+            errorMap.put(code, msg);
         }
     }
 }

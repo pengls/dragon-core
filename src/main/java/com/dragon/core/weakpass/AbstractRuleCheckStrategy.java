@@ -8,21 +8,5 @@ package com.dragon.core.weakpass;
  * @Version V1.0
  */
 public abstract class AbstractRuleCheckStrategy implements RuleCheckStrategy {
-    protected WeakRule weakRule;
-    protected WeakPassCheck weakPassCheck;
 
-    public AbstractRuleCheckStrategy(WeakRule rule, WeakPassCheck weakPassCheck) {
-        this.weakRule = rule;
-        this.weakPassCheck = weakPassCheck;
-    }
-
-    protected void handleException(int code, String msg) {
-        if (weakPassCheck.isThrowException()) {
-            throw new WeakCheckException(msg);
-        }
-
-        if (weakPassCheck.getErrorMap() != null) {
-            weakPassCheck.getErrorMap().put(code, msg);
-        }
-    }
 }

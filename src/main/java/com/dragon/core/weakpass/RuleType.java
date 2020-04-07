@@ -6,7 +6,7 @@ public enum RuleType {
     LOOP,
     LOGIC_ORDER,
     PHYSICAL_ORDER,
-    RANGE,
     REGEX,
-    DIC
+    DIC,
+    KEYWORDS_COMBINATION
 }

@@ -8,28 +8,23 @@ import java.util.regex.Pattern;
 
 /**
  * @ClassName: RegexCheck
- * @Description: TODO
+ * @Description: 正则表达式匹配
  * @Author: pengl
  * @Date: 2020/4/4 11:38
  * @Version V1.0
  */
 public class RegexCheck extends AbstractRuleCheckStrategy {
-    public RegexCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
-        super(rule, weakPassCheck);
-    }
 
     @Override
-    public boolean check() {
-        String passData = weakPassCheck.getPassData();
+    public RuleCheckResult check(String passData, WeakRule weakRule) {
         Assert.notBlank(passData, "password is blank");
         RegexRule rule = (RegexRule) weakRule;
         String regex = rule.getRegex();
         Assert.notBlank(regex, "regex is blank");
         if (!Pattern.matches(regex, passData)) {
-            handleException(ErrorReturn.REGEX_CHECK_1.getCode(), ErrorReturn.REGEX_CHECK_1.getErrorMsg());
-            return false;
+            return new RuleCheckResult(false, ErrorReturn.REGEX_CHECK_1.getCode(), ErrorReturn.REGEX_CHECK_1.getErrorMsg());
         }
-        return true;
+        return new RuleCheckResult();
     }
 
 }

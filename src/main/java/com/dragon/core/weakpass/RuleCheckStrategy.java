@@ -12,5 +12,5 @@ public interface RuleCheckStrategy {
      * check weak password
      * @return
      */
-    boolean check();
+    RuleCheckResult check(String password, WeakRule rule);
 }
