@@ -3,7 +3,6 @@ package com.dragon.core.weakpass.impl.check;
 import com.dragon.core.lang.Assert;
 import com.dragon.core.weakpass.*;
 import com.dragon.core.weakpass.impl.rule.DicRule;
-import com.dragon.core.weakpass.impl.rule.SameRule;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.MessageFormat;
@@ -17,7 +16,7 @@ import java.util.StringTokenizer;
  * @Date: 2020/4/4 10:46
  * @Version V1.0
  */
-public class DicCheck extends AbstractRuleCheck {
+public class DicCheck extends AbstractRuleCheckStrategy {
 
     public DicCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
         super(rule, weakPassCheck);
@@ -36,12 +35,10 @@ public class DicCheck extends AbstractRuleCheck {
         return true;
     }
 
-    @Override
-    public RuleType ruleType() {
-        return RuleType.DIC;
-    }
-
-    public String checkDics(String password, DicRule rule) {
+    private String checkDics(String password, DicRule rule) {
+        if (StringUtils.isBlank(rule.getDicString())) {
+            return null;
+        }
         String dicString = rule.getDicString();
         if (StringUtils.isBlank(dicString)) {
             return null;
@@ -55,7 +52,7 @@ public class DicCheck extends AbstractRuleCheck {
         StringTokenizer tokenizer = new StringTokenizer(dicString, ",");
         while (tokenizer.hasMoreElements()) {
             String ele = tokenizer.nextElement().toString();
-            if (password.indexOf(ele) != -1) {
+            if (ele.equalsIgnoreCase(password)) {
                 return ele;
             }
         }

@@ -96,10 +96,10 @@ public class WeakCheckTest {
         Map<Integer, String> errMap = Maps.newHashMap();
         boolean flag = WeakPassCheck.builder()
                 .rule(new LengthRule().min(8).max(20))
-                .rule(new SameRule().num(5).ignoreCase(true))
+                .rule(new SameRule().ignoreCase(true))
                 .throwException(false)
                 .errorMap(errMap)
-                .passData("QqqqQ1231").build().check();
+                .passData("QqqqQqqqqQ").build().check();
         if (!flag) {
             System.out.println(errMap);
         }

@@ -14,7 +14,7 @@ import java.util.Locale;
  * @Date: 2020/4/4 14:25
  * @Version V1.0
  */
-public class LoopCheck extends AbstractRuleCheck {
+public class LoopCheck extends AbstractRuleCheckStrategy {
 
     public LoopCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
         super(rule, weakPassCheck);
@@ -25,19 +25,19 @@ public class LoopCheck extends AbstractRuleCheck {
         String passData = weakPassCheck.getPassData();
         Assert.notBlank(passData, "password is blank");
         LoopRule rule = (LoopRule) weakRule;
-        if (rule.getNum() > 0) {
-            if (checkLoop(passData, rule)) {
-                handleException(ErrorReturn.LOOP_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LOOP_CHECK_1.getErrorMsg(), rule.getNum()));
-                return false;
-            }
+        if (checkLoop(passData, rule)) {
+            handleException(ErrorReturn.LOOP_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LOOP_CHECK_1.getErrorMsg(), rule.getNum()));
+            return false;
         }
         return true;
     }
 
     private boolean checkLoop(String password, LoopRule rule) {
         password = rule.isIgnoreCase() ? password.toLowerCase(Locale.ENGLISH) : password;
-        int limit_num = rule.getNum();
         int n = password.length();
+        int limit_num = rule.getNum();
+        limit_num = limit_num <= 0 ? (n / 2) : limit_num;
+
         for (int i = 0; i + (limit_num * 2) <= n; i++) {
             String str = password.substring(i, i + limit_num * 2);
             if (loop(str)) {
@@ -55,10 +55,5 @@ public class LoopCheck extends AbstractRuleCheck {
             }
         }
         return true;
-    }
-
-    @Override
-    public RuleType ruleType() {
-        return null;
     }
 }

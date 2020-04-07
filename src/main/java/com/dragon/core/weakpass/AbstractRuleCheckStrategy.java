@@ -1,17 +1,17 @@
 package com.dragon.core.weakpass;
 
 /**
- * @ClassName: AbstractRuleCheck
- * @Description: AbstractRuleCheck
+ * @ClassName: AbstractRuleCheckStrategy
+ * @Description: AbstractRuleCheckStrategy
  * @Author: pengl
  * @Date: 2020/4/3 22:01
  * @Version V1.0
  */
-public abstract class AbstractRuleCheck implements RuleCheck {
+public abstract class AbstractRuleCheckStrategy implements RuleCheckStrategy {
     protected WeakRule weakRule;
     protected WeakPassCheck weakPassCheck;
 
-    public AbstractRuleCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
+    public AbstractRuleCheckStrategy(WeakRule rule, WeakPassCheck weakPassCheck) {
         this.weakRule = rule;
         this.weakPassCheck = weakPassCheck;
     }

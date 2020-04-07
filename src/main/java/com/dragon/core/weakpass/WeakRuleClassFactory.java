@@ -9,16 +9,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @ClassName: RuleFactory
+ * @ClassName: WeakRuleClassFactory
  * @Description: 用于通过字符串找到对应的Rule class
  * @Author: pengl
  * @Date: 2020/4/4 12:13
  * @Version V1.0
  */
-public final class RuleFactory {
+public final class WeakRuleClassFactory {
     private static final String PACKAGE_NAME = "com.dragon.core.weakpass.impl";
 
-    private RuleFactory() {
+    private WeakRuleClassFactory() {
     }
 
     private static Map<String, Class> ruleClassMap = null;
@@ -34,16 +34,12 @@ public final class RuleFactory {
         }
     }
 
-    public static final Class<? extends WeakRule> getRuleClass(String ruleType) {
+    public static final Class<? extends WeakRule> getWeakRuleClass(String ruleType) {
         if (null == ruleClassMap) {
             throw new WeakCheckException("WeakRule Not Found !");
         }
         Class ruleClass = ruleClassMap.get(ruleType);
-        Assert.notNull(ruleClass, "WeakRule: " + ruleType + " Not Found !");
         return ruleClass;
     }
 
-    public static void main(String[] args) {
-
-    }
 }

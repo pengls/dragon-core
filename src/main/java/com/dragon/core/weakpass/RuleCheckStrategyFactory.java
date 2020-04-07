@@ -3,13 +3,13 @@ package com.dragon.core.weakpass;
 import com.dragon.core.weakpass.impl.check.*;
 
 /**
- * @ClassName: RuleCheckFactory
- * @Description: RuleCheckFactory
+ * @ClassName: RuleCheckStrategyFactory
+ * @Description: RuleCheckStrategyFactory
  * @Author: pengl
  * @Date: 2020/4/3 22:02
  * @Version V1.0
  */
-public abstract class RuleCheckFactory {
+public abstract class RuleCheckStrategyFactory {
 
     /**
      * @MethodName: getRuleCheck
@@ -18,7 +18,7 @@ public abstract class RuleCheckFactory {
      * @Date: 2020/4/3 22:16
      * @Version V1.0
      */
-    public static final RuleCheck getRuleCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
+    public static final RuleCheckStrategy getRuleCheckStrategy(WeakRule rule, WeakPassCheck weakPassCheck) {
         switch (rule.ruleType()) {
             case LENGTH:
                 return new LengthCheck(rule, weakPassCheck);
@@ -35,7 +35,6 @@ public abstract class RuleCheckFactory {
             case DIC:
                 return new DicCheck(rule, weakPassCheck);
         }
-
         return null;
     }
 }

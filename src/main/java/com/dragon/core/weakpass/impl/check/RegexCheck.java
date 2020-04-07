@@ -2,7 +2,6 @@ package com.dragon.core.weakpass.impl.check;
 
 import com.dragon.core.lang.Assert;
 import com.dragon.core.weakpass.*;
-import com.dragon.core.weakpass.impl.rule.PhysicalOrderRule;
 import com.dragon.core.weakpass.impl.rule.RegexRule;
 
 import java.util.regex.Pattern;
@@ -14,7 +13,7 @@ import java.util.regex.Pattern;
  * @Date: 2020/4/4 11:38
  * @Version V1.0
  */
-public class RegexCheck extends AbstractRuleCheck {
+public class RegexCheck extends AbstractRuleCheckStrategy {
     public RegexCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
         super(rule, weakPassCheck);
     }
@@ -33,8 +32,4 @@ public class RegexCheck extends AbstractRuleCheck {
         return true;
     }
 
-    @Override
-    public RuleType ruleType() {
-        return RuleType.REGEX;
-    }
 }

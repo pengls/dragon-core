@@ -13,7 +13,7 @@ import java.text.MessageFormat;
  * @Date: 2020/4/3 22:07
  * @Version V1.0
  */
-public class LengthCheck extends AbstractRuleCheck {
+public class LengthCheck extends AbstractRuleCheckStrategy {
 
     public LengthCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
         super(rule, weakPassCheck);
@@ -26,24 +26,16 @@ public class LengthCheck extends AbstractRuleCheck {
         int passLength = passData.length();
         LengthRule rule = (LengthRule) weakRule;
         int min = rule.getMin();
-        if (min > 0) {
-            if (passLength < min) {
-                handleException(ErrorReturn.LENGTH_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LENGTH_CHECK_1.getErrorMsg(), min));
-                return false;
-            }
+        if (min > 0 && passLength < min) {
+            handleException(ErrorReturn.LENGTH_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LENGTH_CHECK_1.getErrorMsg(), min));
+            return false;
         }
 
         int max = rule.getMax();
-        if (max > 0) {
-            if (passLength > max) {
-                handleException(ErrorReturn.LENGTH_CHECK_2.getCode(), MessageFormat.format(ErrorReturn.LENGTH_CHECK_2.getErrorMsg(), max));
-            }
+        if (max > 0 && passLength > max) {
+            handleException(ErrorReturn.LENGTH_CHECK_2.getCode(), MessageFormat.format(ErrorReturn.LENGTH_CHECK_2.getErrorMsg(), max));
+            return false;
         }
         return true;
-    }
-
-    @Override
-    public RuleType ruleType() {
-        return RuleType.LENGTH;
     }
 }

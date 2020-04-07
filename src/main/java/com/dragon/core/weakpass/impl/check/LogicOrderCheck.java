@@ -6,6 +6,7 @@ import com.dragon.core.weakpass.impl.rule.LogicOrderRule;
 
 import java.text.MessageFormat;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 /**
  * @ClassName: LogicOrderCheck
@@ -14,7 +15,7 @@ import java.util.Locale;
  * @Date: 2020/4/4 11:01
  * @Version V1.0
  */
-public class LogicOrderCheck extends AbstractRuleCheck {
+public class LogicOrderCheck extends AbstractRuleCheckStrategy {
 
     public LogicOrderCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
         super(rule, weakPassCheck);
@@ -25,46 +26,44 @@ public class LogicOrderCheck extends AbstractRuleCheck {
         String passData = weakPassCheck.getPassData();
         Assert.notBlank(passData, "password is blank");
         LogicOrderRule rule = (LogicOrderRule) weakRule;
-        if(checkSequentialOrderChars(passData, rule)){
+        if (checkSequentialOrderChars(passData, rule, (r -> handleException(r.getCode(), MessageFormat.format(r.getErrorMsg(), rule.getNum()))))) {
             handleException(ErrorReturn.LOGIC_ORDER_CHECK_1.getCode(), MessageFormat.format(ErrorReturn.LOGIC_ORDER_CHECK_1.getErrorMsg(), rule.getNum()));
             return false;
         }
         return true;
     }
 
-    public boolean checkSequentialOrderChars(String password, LogicOrderRule rule) {
+    private boolean checkSequentialOrderChars(String password, LogicOrderRule rule, Consumer<ErrorReturn> consumer) {
         boolean flag = false;
+        int n = password.length();
         int limit_num = rule.getNum();
+        limit_num = limit_num <= 0 ? n : limit_num;
         int normal_count;
         int reversed_count;
 
-        int n = password.length();
         char[] pwdCharArr = rule.isIgnoreCase() ? password.toLowerCase(Locale.ENGLISH).toCharArray() : password.toCharArray();
 
-        for (int i=0; i+limit_num<=n; i++) {
+        for (int i = 0; i + limit_num <= n; i++) {
             normal_count = 0;
             reversed_count = 0;
-            for (int j=0; j<limit_num-1; j++) {
-                if (pwdCharArr[i+j+1]-pwdCharArr[i+j]==1) {
+            for (int j = 0; j < limit_num - 1; j++) {
+                if (pwdCharArr[i + j + 1] - pwdCharArr[i + j] == 1) {
                     normal_count++;
-                    if(normal_count == limit_num -1){
+                    if (normal_count == limit_num - 1) {
+                        consumer.accept(limit_num == n ? ErrorReturn.LOGIC_ORDER_CHECK_2 : ErrorReturn.LOGIC_ORDER_CHECK_1);
                         return true;
                     }
                 }
 
-                if (pwdCharArr[i+j]-pwdCharArr[i+j+1]==1) {
+                if (pwdCharArr[i + j] - pwdCharArr[i + j + 1] == 1) {
                     reversed_count++;
-                    if(reversed_count == limit_num -1){
+                    if (reversed_count == limit_num - 1) {
+                        consumer.accept(limit_num == n ? ErrorReturn.LOGIC_ORDER_CHECK_2 : ErrorReturn.LOGIC_ORDER_CHECK_1);
                         return true;
                     }
                 }
             }
         }
         return flag;
-    }
-
-    @Override
-    public RuleType ruleType() {
-        return RuleType.LOGIC_ORDER;
     }
 }

@@ -11,7 +11,7 @@ import com.dragon.core.weakpass.impl.rule.PhysicalOrderRule;
  * @Date: 2020/4/3 22:40
  * @Version V1.0
  */
-public class PhysicalOrderCheck extends AbstractRuleCheck {
+public class PhysicalOrderCheck extends AbstractRuleCheckStrategy {
 
     public PhysicalOrderCheck(WeakRule rule, WeakPassCheck weakPassCheck) {
         super(rule, weakPassCheck);
@@ -22,30 +22,21 @@ public class PhysicalOrderCheck extends AbstractRuleCheck {
         String passData = weakPassCheck.getPassData();
         Assert.notBlank(passData, "password is blank");
         PhysicalOrderRule rule = (PhysicalOrderRule) weakRule;
-        if (rule.getHorizontal_num() > 0) {
-            if (checkKeyboard(passData, KEYBOARD_HORIZONTAL_ARR, 1, rule)) {
-                handleException(ErrorReturn.PHYSICAL_ORDER_CHECK_1.getCode(), ErrorReturn.PHYSICAL_ORDER_CHECK_1.getErrorMsg());
-                return false;
-            }
+        if (checkKeyboard(passData, KEYBOARD_HORIZONTAL_ARR, 1, rule)) {
+            handleException(ErrorReturn.PHYSICAL_ORDER_CHECK_1.getCode(), ErrorReturn.PHYSICAL_ORDER_CHECK_1.getErrorMsg());
+            return false;
         }
-        if (rule.getSlope_num() > 0) {
-            if (checkKeyboard(passData, KEYBOARD_SLOPE_ARR, 2, rule)) {
-                handleException(ErrorReturn.PHYSICAL_ORDER_CHECK_2.getCode(), ErrorReturn.PHYSICAL_ORDER_CHECK_2.getErrorMsg());
-                return false;
-            }
+        if (checkKeyboard(passData, KEYBOARD_SLOPE_ARR, 2, rule)) {
+            handleException(ErrorReturn.PHYSICAL_ORDER_CHECK_2.getCode(), ErrorReturn.PHYSICAL_ORDER_CHECK_2.getErrorMsg());
+            return false;
         }
         return true;
-    }
-
-    @Override
-    public RuleType ruleType() {
-        return RuleType.PHYSICAL_ORDER;
     }
 
     /**
      * 键盘横向方向规则
      */
-    public static String[] KEYBOARD_HORIZONTAL_ARR = {
+    private static final String[] KEYBOARD_HORIZONTAL_ARR = {
             "01234567890",
             "qwertyuiop",
             "asdfghjkl",
@@ -54,7 +45,7 @@ public class PhysicalOrderCheck extends AbstractRuleCheck {
     /**
      * 键盘斜线方向规则
      */
-    public static String[] KEYBOARD_SLOPE_ARR = {
+    private static final String[] KEYBOARD_SLOPE_ARR = {
             "1qaz",
             "2wsx",
             "3edc",
@@ -79,7 +70,15 @@ public class PhysicalOrderCheck extends AbstractRuleCheck {
     private boolean checkKeyboard(String password, String[] attrs, int type, PhysicalOrderRule rule) {
         int n = password.length();
         int arrLen = attrs.length;
-        int limit_num = type == 1 ? rule.getHorizontal_num() : rule.getSlope_num();
+        int limit_num;
+        if (type == 1) {
+            limit_num = rule.getHorizontal_num();
+            limit_num = limit_num <= 0 ? n : limit_num;
+        } else {
+            limit_num = rule.getSlope_num();
+            limit_num = limit_num <= 0 ? 4 : limit_num;
+        }
+
 
         for (int i = 0; i + limit_num <= n; i++) {
             String str = password.substring(i, i + limit_num);

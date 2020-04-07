@@ -1,6 +1,5 @@
 package com.dragon.core.weakpass;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dragon.core.lang.Assert;
@@ -38,8 +37,7 @@ public class WeakPassCheck {
     /**
      * 校验不通过时是否抛异常
      */
-    @Builder.Default
-    private boolean throwException = false;
+    private boolean throwException;
     /**
      * 校验不通过信息收集
      */
@@ -72,8 +70,11 @@ public class WeakPassCheck {
         }
 
         for (WeakRule rule : rules) {
-            RuleCheck ruleCheck = RuleCheckFactory.getRuleCheck(rule, this);
-            Assert.notNull(ruleCheck, "unsupported rule type");
+            if (null == rule) {
+                continue;
+            }
+            RuleCheckStrategy ruleCheck = RuleCheckStrategyFactory.getRuleCheckStrategy(rule, this);
+            Assert.notNull(ruleCheck, "未找到对应规则的实现策略：" + rule.ruleType().toString());
             if (!ruleCheck.check()) {
                 return false;
             }
@@ -112,9 +113,13 @@ public class WeakPassCheck {
                 continue;
             }
             try {
-                rules.add(obj.toJavaObject(RuleFactory.getRuleClass(ruleType)));
+                Class<? extends WeakRule> weakRuleClass = WeakRuleClassFactory.getWeakRuleClass(ruleType);
+                if (null == weakRuleClass) {
+                    log.error("[弱密码校验]规则字符串配置有误，不支持的ruleType：{}", obj.toJSONString());
+                    continue;
+                }
+                rules.add(obj.toJavaObject(weakRuleClass));
             } catch (Exception e) {
-                e.printStackTrace();
                 log.error("[弱密码校验]规则字符串解析异常：{}", e.getMessage(), e);
                 continue;
             }
