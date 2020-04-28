@@ -7,7 +7,7 @@ package com.dragon.core.serialize;
  * @Date: 2020/4/1 21:13
  * @Version V1.0
  */
-public interface Serializable {
+public interface ISerializable {
 
     /**
      * @MethodName: serialize

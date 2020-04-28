@@ -13,8 +13,8 @@ import com.dragon.core.serialize.impl.KryoSerialize;
  */
 public abstract class SerializeFactory {
 
-    public static final Serializable getSerializable(Serialize serialize){
-        switch (serialize){
+    public static final ISerializable getSerializable(SerializeType serializeType){
+        switch (serializeType){
             case JDK:
                 return new JdkSerialize();
             case KRYO:

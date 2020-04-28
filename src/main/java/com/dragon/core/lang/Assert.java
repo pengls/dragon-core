@@ -1,8 +1,5 @@
 package com.dragon.core.lang;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import java.util.Collection;
 import java.util.function.Supplier;
 
@@ -86,13 +83,13 @@ public final class Assert {
      * @Version V1.0
      */
     public static void allNotBlank(String message, CharSequence... css) {
-        if (StringUtils.isAnyBlank(css)) {
+        if (StrUtils.isAnyBlank(css)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void allNotBlank(Supplier<String> messageSupplier, CharSequence... css) {
-        if (StringUtils.isAnyBlank(css)) {
+        if (StrUtils.isAnyBlank(css)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
@@ -105,13 +102,13 @@ public final class Assert {
      * @Version V1.0
      */
     public static void allBlank(String message, CharSequence... css) {
-        if (!StringUtils.isAllBlank(css)) {
+        if (!StrUtils.isAllBlank(css)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void allBlank(Supplier<String> messageSupplier, CharSequence... css) {
-        if (!StringUtils.isAllBlank(css)) {
+        if (!StrUtils.isAllBlank(css)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
@@ -130,100 +127,77 @@ public final class Assert {
     }
 
     public static void notEmpty(String str, String message) {
-        if (StringUtils.isEmpty(str)) {
+        if (StrUtils.isEmpty(str)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void notEmpty(String str, Supplier<String> messageSupplier) {
-        if (StringUtils.isEmpty(str)) {
+        if (StrUtils.isEmpty(str)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isEmpty(String str, String message) {
-        if (StringUtils.isNotEmpty(str)) {
+        if (StrUtils.isNotEmpty(str)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void isEmpty(String str, Supplier<String> messageSupplier) {
-        if (StringUtils.isNotEmpty(str)) {
+        if (StrUtils.isNotEmpty(str)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void notBlank(String str, String message) {
-        if (StringUtils.isBlank(str)) {
+        if (StrUtils.isBlank(str)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void notBlank(String str, Supplier<String> messageSupplier) {
-        if (StringUtils.isBlank(str)) {
+        if (StrUtils.isBlank(str)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isBlank(String str, String message) {
-        if (StringUtils.isNotBlank(str)) {
+        if (StrUtils.isNotBlank(str)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void isBlank(String str, Supplier<String> messageSupplier) {
-        if (StringUtils.isNotBlank(str)) {
+        if (StrUtils.isNotBlank(str)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void endWith(String str, String end, String message) {
-        if (!StringUtils.endsWith(str, end)) {
+    public static void endWith(String str, String suffix, boolean ignoreCase, String message) {
+        if (!StrUtils.endsWith(str, suffix, ignoreCase)) {
             throw new IllegalArgumentException(message);
         }
     }
 
-    public static void endWith(String str, String end, Supplier<String> messageSupplier) {
-        if (!StringUtils.endsWith(str, end)) {
+    public static void endWith(String str, String suffix, boolean ignoreCase, Supplier<String> messageSupplier) {
+        if (!StrUtils.endsWith(str, suffix, ignoreCase)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void startWith(String str, String start, String message) {
-        if (!StringUtils.startsWith(str, start)) {
+    public static void startWith(String str, String prefix, boolean ignoreCase, String message) {
+        if (!StrUtils.startsWith(str, prefix, ignoreCase)) {
             throw new IllegalArgumentException(message);
         }
     }
 
-    public static void startWith(String str, String start, Supplier<String> messageSupplier) {
-        if (!StringUtils.startsWith(str, start)) {
+    public static void startWith(String str, String prefix, boolean ignoreCase, Supplier<String> messageSupplier) {
+        if (!StrUtils.startsWith(str, prefix, ignoreCase)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void endWithIgnoreCase(String str, String end, String message) {
-        if (!StringUtils.endsWithIgnoreCase(str, end)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    public static void endWithIgnoreCase(String str, String end, Supplier<String> messageSupplier) {
-        if (!StringUtils.endsWithIgnoreCase(str, end)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
-        }
-    }
-
-    public static void startWithIgnoreCase(String str, String start, String message) {
-        if (!StringUtils.startsWithIgnoreCase(str, start)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    public static void startWithIgnoreCase(String str, String start, Supplier<String> messageSupplier) {
-        if (!StringUtils.startsWithIgnoreCase(str, start)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
-        }
-    }
 
     public static void isAssignable(Class<?> superType, Class<?> subType, String message) {
         notNull(superType, "Super type to check against must not be null");
@@ -255,7 +229,7 @@ public final class Assert {
     }
 
     public static void notEmpty(Object[] array, String message) {
-        if (ObjectUtils.isEmpty(array)) {
+        if (Objects.isEmpty(array)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -273,43 +247,43 @@ public final class Assert {
     }
 
     public static void notEmpty(Object[] array, Supplier<String> messageSupplier) {
-        if (ObjectUtils.isEmpty(array)) {
+        if (Objects.isEmpty(array)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void notEmpty(Collection<?> collection, String message) {
-        if (CollectionUtils.isEmpty(collection)) {
+        if (Objects.isEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void notEmpty(Collection<?> collection, Supplier<String> messageSupplier) {
-        if (CollectionUtils.isEmpty(collection)) {
+        if (Objects.isEmpty(collection)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isEmpty(Object[] array, String message) {
-        if (ObjectUtils.isNotEmpty(array)) {
+        if (Objects.isNotEmpty(array)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void isEmpty(Object[] array, Supplier<String> messageSupplier) {
-        if (ObjectUtils.isNotEmpty(array)) {
+        if (Objects.isNotEmpty(array)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isEmpty(Collection<?> collection, String message) {
-        if (CollectionUtils.isNotEmpty(collection)) {
+        if (Objects.isNotEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void isEmpty(Collection<?> collection, Supplier<String> messageSupplier) {
-        if (CollectionUtils.isNotEmpty(collection)) {
+        if (Objects.isNotEmpty(collection)) {
             throw new IllegalArgumentException(nullSafeGet(messageSupplier));
         }
     }

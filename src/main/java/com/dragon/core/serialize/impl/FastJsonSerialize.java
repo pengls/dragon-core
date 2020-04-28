@@ -1,7 +1,7 @@
 package com.dragon.core.serialize.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.dragon.core.serialize.Serializable;
+import com.dragon.core.serialize.ISerializable;
 
 /**
  * @ClassName: FastJsonSerialize
@@ -10,7 +10,7 @@ import com.dragon.core.serialize.Serializable;
  * @Date: 2020/4/5 13:04
  * @Version V1.0
  */
-public class FastJsonSerialize implements Serializable {
+public class FastJsonSerialize implements ISerializable {
     @Override
     public byte[] serialize(Object obj) {
         return JSON.toJSONBytes(obj);

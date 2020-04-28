@@ -1,8 +1,7 @@
 package com.dragon.core.serialize.impl;
 
-import com.dragon.core.serialize.Serializable;
+import com.dragon.core.serialize.ISerializable;
 import com.dragon.core.serialize.SerializeException;
-
 import java.io.*;
 
 /**
@@ -12,7 +11,8 @@ import java.io.*;
  * @Date: 2020/4/1 21:15
  * @Version V1.0
  */
-public class JdkSerialize implements Serializable {
+public class JdkSerialize implements ISerializable {
+
     @Override
     public byte[] serialize(Object obj) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

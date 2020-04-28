@@ -1,6 +1,6 @@
 package com.dragon.core.serialize.impl;
 
-import com.dragon.core.serialize.Serializable;
+import com.dragon.core.serialize.ISerializable;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -13,7 +13,7 @@ import com.esotericsoftware.kryo.util.Pool;
  * @Date: 2020/4/4 20:06
  * @Version V1.0
  */
-public class KryoSerialize implements Serializable {
+public class KryoSerialize implements ISerializable {
     private static Pool<Kryo> mKryoPool = new Pool<Kryo>(true, false, 8) {
         @Override
         protected Kryo create() {
