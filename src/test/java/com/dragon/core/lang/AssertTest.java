@@ -16,6 +16,5 @@ public class AssertTest {
         //Assert.allNotBlank(() -> "fuck", "2", "");
         //Assert.startWith("abvc", "ac", "fuck");
         //Assert.startWithIgnoreCase("abvc", "A", "fuck");
-        Assert.endWithIgnoreCase("abvc", "VC", "fuck");
     }
 }
