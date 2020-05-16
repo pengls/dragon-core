@@ -26,6 +26,7 @@
         <fastjson>1.2.68</fastjson>
         <kryo>5.0.0-RC1</kryo>
         <gson>2.8.6</gson>
+        <jmh>1.23</jmh>
     </properties>
 
     <dependencies>
@@ -100,6 +101,18 @@
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!--jmh基准测试 -->
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>${jmh}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>${jmh}</version>
         </dependency>
 
     </dependencies>
