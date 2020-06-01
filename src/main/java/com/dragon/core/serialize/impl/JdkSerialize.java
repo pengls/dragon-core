@@ -2,6 +2,7 @@ package com.dragon.core.serialize.impl;
 
 import com.dragon.core.serialize.ISerializable;
 import com.dragon.core.serialize.SerializeException;
+import com.dragon.core.serialize.SerializeType;
 import java.io.*;
 
 /**
@@ -14,7 +15,7 @@ import java.io.*;
 public class JdkSerialize implements ISerializable {
 
     @Override
-    public byte[] serialize(Object obj) {
+    public <T> byte[] serialize(T obj) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             oos.writeObject(obj);
@@ -26,7 +27,10 @@ public class JdkSerialize implements ISerializable {
     }
 
     @Override
-    public <T> T deserialize(byte[] data, Class<T> pvClass) {
+    public <T> T deserialize(byte[] data, Class pvClass) {
+        if (data == null || data.length == 0) {
+            return null;
+        }
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         try (ObjectInputStream oos = new ObjectInputStream(bais)) {
             return (T) oos.readObject();
@@ -35,5 +39,10 @@ public class JdkSerialize implements ISerializable {
         } catch (ClassNotFoundException e) {
             throw new SerializeException(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public SerializeType serializeType() {
+        return SerializeType.JDK;
     }
 }

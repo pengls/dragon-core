@@ -1,6 +1,8 @@
 package com.dragon.core.serialize.impl;
 
 import com.dragon.core.serialize.ISerializable;
+import com.dragon.core.serialize.SerializeException;
+import com.dragon.core.serialize.SerializeType;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -8,7 +10,7 @@ import com.esotericsoftware.kryo.util.Pool;
 
 /**
  * @ClassName: KryoSerialize
- * @Description: Kryo序列化
+ * @Description: Kryo
  * @Author: pengl
  * @Date: 2020/4/4 20:06
  * @Version V1.0
@@ -38,7 +40,7 @@ public class KryoSerialize implements ISerializable {
     };
 
     @Override
-    public byte[] serialize(Object obj) {
+    public <T> byte[] serialize(T obj) {
         Kryo kryo = mKryoPool.obtain();
         Output output = mOutputPool.obtain();
         try {
@@ -52,15 +54,25 @@ public class KryoSerialize implements ISerializable {
     }
 
     @Override
-    public <T> T deserialize(byte[] data, Class<T> pvClass) {
+    public <T> T deserialize(byte[] data, Class pvClass) {
+        if (data == null || data.length == 0) {
+            return null;
+        }
         Kryo kryo = mKryoPool.obtain();
         Input input = mInputPool.obtain();
         try {
             input.setBuffer(data);
-            return kryo.readObject(input, pvClass);
+            return (T) kryo.readObject(input, pvClass);
+        } catch (Exception e) {
+            throw new SerializeException(e.getMessage(), e);
         } finally {
             mKryoPool.free(kryo);
             mInputPool.free(input);
         }
+    }
+
+    @Override
+    public SerializeType serializeType() {
+        return SerializeType.KRYO;
     }
 }

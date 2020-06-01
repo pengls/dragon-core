@@ -1,7 +1,5 @@
 package com.dragon.core;
 
-import java.io.Serializable;
-
 /**
  * @ClassName: Stu
  * @Description: TODO
@@ -9,17 +7,17 @@ import java.io.Serializable;
  * @Date: 2020/4/1 21:46
  * @Version V1.0
  */
-public class Stu implements Serializable {
+public class Stu2{
 
     private String uid;
     private String name;
     private int age;
-    private Stu stu2;
+    private Stu2 stu2;
 
-    public Stu(){}
+    public Stu2(){}
 
 
-    public Stu(String uid, String name, int age){
+    public Stu2(String uid, String name, int age){
         this.uid = uid;
         this.name = name;
         this.age = age;
@@ -49,17 +47,17 @@ public class Stu implements Serializable {
         this.age = age;
     }
 
-    public Stu getStu2() {
+    public Stu2 getStu2() {
         return stu2;
     }
 
-    public void setStu2(Stu stu2) {
+    public void setStu2(Stu2 stu2) {
         this.stu2 = stu2;
     }
 
     @Override
     public String toString() {
-        return "Stu{" +
+        return "Stu2{" +
                 "uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age +

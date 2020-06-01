@@ -15,18 +15,11 @@ import java.util.Map;
  * @Version V1.0
  */
 public class Objects {
-    /**
-     * @MethodName: nullSafeClose
-     * @Description: 关闭 resource
-     * @Author: pengl
-     * @Date: 2020/4/1 20:32
-     * @Version V1.0
-     */
+
     public static void nullSafeClose(Closeable... closeables) {
         if (closeables == null) {
             return;
         }
-
         for (Closeable closeable : closeables) {
             if (closeable != null) {
                 try {
@@ -38,13 +31,6 @@ public class Objects {
         }
     }
 
-    /**
-     * @MethodName: percentage
-     * @Description: 百分比计算
-     * @Author: pengl
-     * @Date: 2020/4/4 22:16
-     * @Version V1.0
-     */
     public static String percentage(long a, long b, int decimal){
         NumberFormat format = NumberFormat.getInstance();
         format.setMaximumFractionDigits(decimal);

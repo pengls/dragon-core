@@ -2,6 +2,7 @@ package com.dragon.core.serialize.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.dragon.core.serialize.ISerializable;
+import com.dragon.core.serialize.SerializeType;
 
 /**
  * @ClassName: FastJsonSerialize
@@ -12,12 +13,20 @@ import com.dragon.core.serialize.ISerializable;
  */
 public class FastJsonSerialize implements ISerializable {
     @Override
-    public byte[] serialize(Object obj) {
+    public <T> byte[] serialize(T obj) {
         return JSON.toJSONBytes(obj);
     }
 
     @Override
-    public <T> T deserialize(byte[] data, Class<T> pvClass) {
-        return JSON.parseObject(data, pvClass);
+    public <T> T deserialize(byte[] data, Class pvClass) {
+        if (data == null || data.length == 0) {
+            return null;
+        }
+        return (T) JSON.parseObject(data, pvClass);
+    }
+
+    @Override
+    public SerializeType serializeType() {
+        return SerializeType.FAST_JSON;
     }
 }

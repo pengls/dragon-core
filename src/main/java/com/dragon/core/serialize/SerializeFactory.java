@@ -1,6 +1,7 @@
 package com.dragon.core.serialize;
 
 import com.dragon.core.serialize.impl.FastJsonSerialize;
+import com.dragon.core.serialize.impl.HessianSerialize;
 import com.dragon.core.serialize.impl.JdkSerialize;
 import com.dragon.core.serialize.impl.KryoSerialize;
 
@@ -12,17 +13,21 @@ import com.dragon.core.serialize.impl.KryoSerialize;
  * @Version V1.0
  */
 public abstract class SerializeFactory {
+    private static ISerializable kryoSerialize = new KryoSerialize();
+    private static ISerializable jdkSerialize = new JdkSerialize();
+    private static ISerializable hessianSerialize = new HessianSerialize();
+    private static ISerializable fastJsonSerialize = new FastJsonSerialize();
 
-    public static final ISerializable getSerializable(SerializeType serializeType){
-        switch (serializeType){
-            case JDK:
-                return new JdkSerialize();
+    public static final ISerializable getSerializable(SerializeType serializeType) {
+        switch (serializeType) {
             case KRYO:
-                return new KryoSerialize();
+                return kryoSerialize;
             case FAST_JSON:
-                return new FastJsonSerialize();
+                return fastJsonSerialize;
+            case HESSIAN:
+                return hessianSerialize;
             default:
-                return new JdkSerialize();
+                return jdkSerialize;
         }
     }
 }

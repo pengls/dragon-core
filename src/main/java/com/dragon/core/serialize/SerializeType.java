@@ -3,5 +3,6 @@ package com.dragon.core.serialize;
 public enum SerializeType {
     JDK,
     KRYO,
-    FAST_JSON;
+    FAST_JSON,
+    HESSIAN;
 }

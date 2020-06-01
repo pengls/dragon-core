@@ -16,7 +16,7 @@ public interface ISerializable {
      * @Date: 2020/4/1 21:14
      * @Version V1.0
      */
-    byte[] serialize(Object obj);
+    <T> byte[] serialize(T obj);
 
     /**
      * @MethodName: deserialize
@@ -25,6 +25,15 @@ public interface ISerializable {
      * @Date: 2020/4/1 21:15
      * @Version V1.0
      */
-    <T> T deserialize(byte[] data, Class<T> pvClass);
+    <T> T deserialize(byte[] data, Class pvClass);
+
+    /**
+     * @MethodName: serializeType
+     * @Description: the impl type
+     * @Author: pengl
+     * @Date: 2020/6/1 13:48
+     * @Version V1.0
+     */
+    SerializeType serializeType();
 
 }

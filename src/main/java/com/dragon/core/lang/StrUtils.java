@@ -74,13 +74,6 @@ public class StrUtils {
         return !isBlank(cs);
     }
 
-    /**
-     * byte[] --> string
-     *
-     * @param bytes
-     * @param charset
-     * @return
-     */
     public static String newString(byte[] bytes, Charset charset) {
         return bytes == null ? null : new String(bytes, charset);
     }
@@ -160,13 +153,11 @@ public class StrUtils {
                             if (!ignoreCase) {
                                 return false;
                             }
-
                             if (Character.toUpperCase(c1) != Character.toUpperCase(c2) && Character.toLowerCase(c1) != Character.toLowerCase(c2)) {
                                 return false;
                             }
                         }
                     }
-
                     return true;
                 } else {
                     return false;
