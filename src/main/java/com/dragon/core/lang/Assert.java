@@ -1,5 +1,9 @@
 package com.dragon.core.lang;
 
+import com.dragon.core.lang.exception.BaseRuntimeException;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Collection;
 import java.util.function.Supplier;
 
@@ -11,296 +15,356 @@ import java.util.function.Supplier;
  * @Version V1.0
  */
 public final class Assert {
-    /**
-     * @MethodName: isTrue
-     * @Description: isTrue
-     * @Author: pengl
-     * @Date: 2020/3/31 20:18
-     * @Version V1.0
-     */
+
     public static void isTrue(boolean expression, String message) {
         if (!expression) {
-            throw new IllegalArgumentException(message);
+            throw new BaseRuntimeException(message);
         }
     }
 
-    /**
-     * @MethodName: isTrue
-     * @Description: isTrue
-     * @Author: pengl
-     * @Date: 2020/3/31 20:19
-     * @Version V1.0
-     */
     public static void isTrue(boolean expression, Supplier<String> messageSupplier) {
         if (!expression) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
-    /**
-     * @MethodName: isTrue
-     * @Description: isTrue
-     * @Author: pengl
-     * @Date: 2020/3/31 20:18
-     * @Version V1.0
-     */
     public static void isFalse(boolean expression, String message) {
         if (expression) {
-            throw new IllegalArgumentException(message);
+            throw new BaseRuntimeException(message);
         }
     }
 
-    /**
-     * @MethodName: isTrue
-     * @Description: isTrue
-     * @Author: pengl
-     * @Date: 2020/3/31 20:19
-     * @Version V1.0
-     */
     public static void isFalse(boolean expression, Supplier<String> messageSupplier) {
         if (expression) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isNull(Object object, String message) {
         if (object != null) {
-            throw new IllegalArgumentException(message);
+            throw new BaseRuntimeException(message);
         }
     }
 
     public static void isNull(Object object, Supplier<String> messageSupplier) {
         if (object != null) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isNotNull(Object object, String message) {
+        if (object == null) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isNotNull(Object object, Supplier<String> messageSupplier) {
+        if (object == null) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     /**
-     * @MethodName: allNotBlank
-     * @Description: assert all not blank
-     * @Author: pengl
-     * @Date: 2020/3/31 21:22
-     * @Version V1.0
+     * assert all not blank
      */
-    public static void allNotBlank(String message, CharSequence... css) {
-        if (StrUtils.isAnyBlank(css)) {
-            throw new IllegalArgumentException(message);
+    public static void isAllNotBlank(String message, CharSequence... css) {
+        if (StringUtils.isAnyBlank(css)) {
+            throw new BaseRuntimeException(message);
         }
     }
 
-    public static void allNotBlank(Supplier<String> messageSupplier, CharSequence... css) {
-        if (StrUtils.isAnyBlank(css)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+    public static void isAllNotBlank(Supplier<String> messageSupplier, CharSequence... css) {
+        if (StringUtils.isAnyBlank(css)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     /**
-     * @MethodName: allBlank
-     * @Description: assert all blank
-     * @Author: pengl
-     * @Date: 2020/3/31 21:22
-     * @Version V1.0
+     * assert all blank
      */
-    public static void allBlank(String message, CharSequence... css) {
-        if (!StrUtils.isAllBlank(css)) {
-            throw new IllegalArgumentException(message);
+    public static void isAllBlank(String message, CharSequence... css) {
+        if (!StringUtils.isAllBlank(css)) {
+            throw new BaseRuntimeException(message);
         }
     }
 
-    public static void allBlank(Supplier<String> messageSupplier, CharSequence... css) {
-        if (!StrUtils.isAllBlank(css)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+    public static void isAllBlank(Supplier<String> messageSupplier, CharSequence... css) {
+        if (!StringUtils.isAllBlank(css)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
-
-    public static void notNull(Object object, String message) {
-        if (object == null) {
-            throw new IllegalArgumentException(message);
+    public static void isNotEmpty(String str, String message) {
+        if (StringUtils.isEmpty(str)) {
+            throw new BaseRuntimeException(message);
         }
     }
 
-    public static void notNull(Object object, Supplier<String> messageSupplier) {
-        if (object == null) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
-        }
-    }
-
-    public static void notEmpty(String str, String message) {
-        if (StrUtils.isEmpty(str)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    public static void notEmpty(String str, Supplier<String> messageSupplier) {
-        if (StrUtils.isEmpty(str)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+    public static void isNotEmpty(String str, Supplier<String> messageSupplier) {
+        if (StringUtils.isEmpty(str)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isEmpty(String str, String message) {
-        if (StrUtils.isNotEmpty(str)) {
-            throw new IllegalArgumentException(message);
+        if (StringUtils.isNotEmpty(str)) {
+            throw new BaseRuntimeException(message);
         }
     }
 
     public static void isEmpty(String str, Supplier<String> messageSupplier) {
-        if (StrUtils.isNotEmpty(str)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+        if (StringUtils.isNotEmpty(str)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void notBlank(String str, String message) {
-        if (StrUtils.isBlank(str)) {
-            throw new IllegalArgumentException(message);
+    public static void isNotBlank(String str, String message) {
+        if (StringUtils.isBlank(str)) {
+            throw new BaseRuntimeException(message);
         }
     }
 
-    public static void notBlank(String str, Supplier<String> messageSupplier) {
-        if (StrUtils.isBlank(str)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+    public static void isNotBlank(String str, Supplier<String> messageSupplier) {
+        if (StringUtils.isBlank(str)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isBlank(String str, String message) {
-        if (StrUtils.isNotBlank(str)) {
-            throw new IllegalArgumentException(message);
+        if (StringUtils.isNotBlank(str)) {
+            throw new BaseRuntimeException(message);
         }
     }
 
     public static void isBlank(String str, Supplier<String> messageSupplier) {
-        if (StrUtils.isNotBlank(str)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+        if (StringUtils.isNotBlank(str)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void endWith(String str, String suffix, boolean ignoreCase, String message) {
-        if (!StrUtils.endsWith(str, suffix, ignoreCase)) {
-            throw new IllegalArgumentException(message);
+    public static void isEndWith(String str, String suffix, String message) {
+        if (!StringUtils.endsWith(str, suffix)) {
+            throw new BaseRuntimeException(message);
         }
     }
 
-    public static void endWith(String str, String suffix, boolean ignoreCase, Supplier<String> messageSupplier) {
-        if (!StrUtils.endsWith(str, suffix, ignoreCase)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+    public static void isEndWith(String str, String suffix, Supplier<String> messageSupplier) {
+        if (!StringUtils.endsWith(str, suffix)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void startWith(String str, String prefix, boolean ignoreCase, String message) {
-        if (!StrUtils.startsWith(str, prefix, ignoreCase)) {
-            throw new IllegalArgumentException(message);
+    public static void isNotEndWith(String str, String suffix, Supplier<String> messageSupplier) {
+        if (StringUtils.endsWith(str, suffix)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void startWith(String str, String prefix, boolean ignoreCase, Supplier<String> messageSupplier) {
-        if (!StrUtils.startsWith(str, prefix, ignoreCase)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+    public static void isNotEndWith(String str, String suffix, String message) {
+        if (StringUtils.endsWith(str, suffix)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isEndsWithIgnoreCase(String str, String suffix, String message) {
+        if (!StringUtils.endsWithIgnoreCase(str, suffix)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isEndsWithIgnoreCase(String str, String suffix, Supplier<String> messageSupplier) {
+        if (!StringUtils.endsWithIgnoreCase(str, suffix)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isNotEndsWithIgnoreCase(String str, String suffix, String message) {
+        if (StringUtils.endsWithIgnoreCase(str, suffix)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isNotEndsWithIgnoreCase(String str, String suffix, Supplier<String> messageSupplier) {
+        if (StringUtils.endsWithIgnoreCase(str, suffix)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isStartWith(String str, String prefix, String message) {
+        if (!StringUtils.startsWith(str, prefix)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isStartWith(String str, String prefix, Supplier<String> messageSupplier) {
+        if (!StringUtils.startsWith(str, prefix)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isNotStartWith(String str, String prefix, String message) {
+        if (StringUtils.startsWith(str, prefix)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isNotStartWith(String str, String prefix, Supplier<String> messageSupplier) {
+        if (StringUtils.startsWith(str, prefix)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isStartsWithIgnoreCase(String str, String prefix, String message) {
+        if (!StringUtils.startsWithIgnoreCase(str, prefix)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isStartsWithIgnoreCase(String str, String prefix, Supplier<String> messageSupplier) {
+        if (!StringUtils.startsWithIgnoreCase(str, prefix)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isNotStartsWithIgnoreCase(String str, String prefix, String message) {
+        if (StringUtils.startsWithIgnoreCase(str, prefix)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isNotStartsWithIgnoreCase(String str, String prefix, Supplier<String> messageSupplier) {
+        if (StringUtils.startsWithIgnoreCase(str, prefix)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
 
     public static void isAssignable(Class<?> superType, Class<?> subType, String message) {
-        notNull(superType, "Super type to check against must not be null");
+        isNotNull(superType, "Super type to check against must not be null");
         if (subType == null || !superType.isAssignableFrom(subType)) {
-            throw new IllegalArgumentException(message);
+            throw new BaseRuntimeException(message);
         }
 
     }
 
     public static void isAssignable(Class<?> superType, Class<?> subType, Supplier<String> messageSupplier) {
-        notNull(superType, "Super type to check against must not be null");
+        isNotNull(superType, "Super type to check against must not be null");
         if (subType == null || !superType.isAssignableFrom(subType)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isInstanceOf(Class<?> type, Object obj, String message) {
-        notNull(type, "Type to check against must not be null");
+        isNotNull(type, "Type to check against must not be null");
         if (!type.isInstance(obj)) {
-            throw new IllegalArgumentException(message);
+            throw new BaseRuntimeException(message);
         }
     }
 
     public static void isInstanceOf(Class<?> type, Object obj, Supplier<String> messageSupplier) {
-        notNull(type, "Type to check against must not be null");
+        isNotNull(type, "Type to check against must not be null");
         if (!type.isInstance(obj)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void notEmpty(Object[] array, String message) {
+    public static void isNotEmpty(Object[] array, String message) {
         if (Objects.isEmpty(array)) {
-            throw new IllegalArgumentException(message);
+            throw new BaseRuntimeException(message);
         }
     }
 
-    public static void notEmpty(byte[] bytes, Supplier<String> messageSupplier) {
-        if (bytes == null || bytes.length == 0) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
-        }
-    }
-
-    public static void notEmpty(byte[] bytes, String message) {
-        if (bytes == null || bytes.length == 0) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    public static void notEmpty(Object[] array, Supplier<String> messageSupplier) {
+    public static void isNotEmpty(Object[] array, Supplier<String> messageSupplier) {
         if (Objects.isEmpty(array)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void notEmpty(Collection<?> collection, String message) {
-        if (Objects.isEmpty(collection)) {
-            throw new IllegalArgumentException(message);
+    public static void isNotEmpty(byte[] bytes, Supplier<String> messageSupplier) {
+        if (bytes == null || bytes.length == 0) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
-    public static void notEmpty(Collection<?> collection, Supplier<String> messageSupplier) {
-        if (Objects.isEmpty(collection)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+    public static void isNotEmpty(byte[] bytes, String message) {
+        if (bytes == null || bytes.length == 0) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isNotEmpty(Collection<?> collection, String message) {
+        if (CollectionUtils.isEmpty(collection)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isNotEmpty(Collection<?> collection, Supplier<String> messageSupplier) {
+        if (CollectionUtils.isEmpty(collection)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isEmpty(Object[] array, String message) {
         if (Objects.isNotEmpty(array)) {
-            throw new IllegalArgumentException(message);
+            throw new BaseRuntimeException(message);
         }
     }
 
     public static void isEmpty(Object[] array, Supplier<String> messageSupplier) {
         if (Objects.isNotEmpty(array)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isEmpty(Collection<?> collection, String message) {
-        if (Objects.isNotEmpty(collection)) {
-            throw new IllegalArgumentException(message);
+        if (CollectionUtils.isNotEmpty(collection)) {
+            throw new BaseRuntimeException(message);
         }
     }
 
     public static void isEmpty(Collection<?> collection, Supplier<String> messageSupplier) {
-        if (Objects.isNotEmpty(collection)) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+        if (CollectionUtils.isNotEmpty(collection)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isRangeIndex(int index, int size, String message) {
         if (index < 0 || index >= size) {
-            throw new IllegalArgumentException(message);
+            throw new BaseRuntimeException(message);
         }
     }
 
     public static void isRangeIndex(int index, int size, Supplier<String> messageSupplier) {
         if (index < 0 || index >= size) {
-            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
         }
     }
 
     private static String nullSafeGet(Supplier<String> messageSupplier) {
         return messageSupplier != null ? messageSupplier.get() : null;
+    }
+
+    public static void isEquals(String str, String str2, String message) {
+        if (!StringUtils.equals(str, str2)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isEquals(String str, String str2, Supplier<String> messageSupplier) {
+        if (!StringUtils.equals(str, str2)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
+        }
+    }
+
+    public static void isNotEquals(String str, String str2, String message) {
+        if (StringUtils.equals(str, str2)) {
+            throw new BaseRuntimeException(message);
+        }
+    }
+
+    public static void isNotEquals(String str, String str2, Supplier<String> messageSupplier) {
+        if (StringUtils.equals(str, str2)) {
+            throw new BaseRuntimeException(nullSafeGet(messageSupplier));
+        }
     }
 }

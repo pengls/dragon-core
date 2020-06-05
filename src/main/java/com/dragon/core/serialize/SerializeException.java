@@ -1,5 +1,7 @@
 package com.dragon.core.serialize;
 
+import com.dragon.core.lang.exception.BaseRuntimeException;
+
 /**
  * @ClassName: SerializeException
  * @Description: SerializeException
@@ -7,7 +9,7 @@ package com.dragon.core.serialize;
  * @Date: 2020/4/1 21:17
  * @Version V1.0
  */
-public class SerializeException extends RuntimeException {
+public class SerializeException extends BaseRuntimeException {
     public SerializeException(String message) {
         super(message);
     }

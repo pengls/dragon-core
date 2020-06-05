@@ -37,7 +37,7 @@ public final class SparseArray {
      * @Version V1.0
      */
     public static int[][] from(int[][] arr) {
-        Assert.notNull(arr, "arr is null");
+        Assert.isNotNull(arr, "arr is null");
         int sum = 0;
         List<String> locations = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
@@ -70,7 +70,7 @@ public final class SparseArray {
      * @Version V1.0
      */
     public static int[][] to(int[][] arr) {
-        Assert.notNull(arr, "arr is null");
+        Assert.isNotNull(arr, "arr is null");
         int[][] result = new int[arr[0][0]][arr[0][1]];
         for (int i = 1; i < arr.length; i++) {
             int[] row = arr[i];

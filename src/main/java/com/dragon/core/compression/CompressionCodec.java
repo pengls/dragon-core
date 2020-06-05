@@ -15,7 +15,7 @@ public interface CompressionCodec {
      * @Date: 2020/4/1 20:18
      * @Version V1.0
      */
-    byte[] compress(byte[] data) throws CompressionException;
+    byte[] compress(byte[] data);
     /**
      * @MethodName: decompress
      * @Description: decompress
@@ -23,7 +23,7 @@ public interface CompressionCodec {
      * @Date: 2020/4/1 20:18
      * @Version V1.0
      */
-    byte[] decompress(byte[] compressed) throws CompressionException;
+    byte[] decompress(byte[] compressed);
     /**
      * @MethodName: current
      * @Description: who am i

@@ -4,5 +4,6 @@ public enum SerializeType {
     JDK,
     KRYO,
     FAST_JSON,
+    JACKSON,
     HESSIAN;
 }

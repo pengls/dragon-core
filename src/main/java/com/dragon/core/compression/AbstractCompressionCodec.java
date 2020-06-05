@@ -69,7 +69,7 @@ public abstract class AbstractCompressionCodec implements CompressionCodec {
 
     @Override
     public final byte[] compress(byte[] data) {
-        Assert.notNull(data, "payload cannot be null.");
+        Assert.isNotNull(data, "payload cannot be null.");
 
         try {
             return doCompress(data);
@@ -81,7 +81,7 @@ public abstract class AbstractCompressionCodec implements CompressionCodec {
 
     @Override
     public final byte[] decompress(byte[] compressed) {
-        Assert.notNull(compressed, "compressed bytes cannot be null.");
+        Assert.isNotNull(compressed, "compressed bytes cannot be null.");
 
         try {
             return doDecompress(compressed);

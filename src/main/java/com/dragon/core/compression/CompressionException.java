@@ -1,6 +1,6 @@
 package com.dragon.core.compression;
 
-import com.dragon.core.lang.BaseException;
+import com.dragon.core.lang.exception.BaseRuntimeException;
 
 /**
  * @ClassName: CompressionException
@@ -9,7 +9,7 @@ import com.dragon.core.lang.BaseException;
  * @Date: 2020/4/1 20:15
  * @Version V1.0
  */
-public class CompressionException extends BaseException {
+public class CompressionException extends BaseRuntimeException {
     public CompressionException(String errorMsg) {
         super(errorMsg);
     }

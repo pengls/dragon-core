@@ -2,7 +2,7 @@ package com.dragon.core.serialize;
 
 import com.dragon.core.Stu;
 import com.dragon.core.Stu2;
-import com.dragon.core.lang.StrUtils;
+import com.dragon.core.lang.StrUtil;
 import org.junit.Test;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
@@ -87,6 +87,23 @@ public class SerializeTest {
         Stu outStu = iSerializable.deserialize(datas, Stu.class);
     }
 
+    @Benchmark
+    @BenchmarkMode(Mode.AverageTime)
+    @OutputTimeUnit(TimeUnit.SECONDS)
+    @Warmup(iterations = 1, time = 1, timeUnit = TimeUnit.SECONDS)
+    @Measurement(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS)
+    @Fork(2)
+    public void jacksonSerializeTest(){
+        Stu stu = new Stu("UID-23", "Jordan", 50);
+        Stu stu1 = new Stu("UID-03", "Iverson", 42);
+        stu.setStu2(stu1);
+
+        ISerializable iSerializable = SerializeFactory.getSerializable(SerializeType.JACKSON);
+        byte[] datas = iSerializable.serialize(stu);
+
+        Stu outStu = iSerializable.deserialize(datas, Stu.class);
+    }
+
 
     @Test
     public void jmhTest() throws RunnerException {
@@ -104,9 +121,9 @@ public class SerializeTest {
         Stu2 stu1 = new Stu2("UID-03", "Iverson", 42);
         stu.setStu2(stu1);
 
-        ISerializable iSerializable = SerializeFactory.getSerializable(SerializeType.HESSIAN);
+        ISerializable iSerializable = SerializeFactory.getSerializable(SerializeType.JACKSON);
         byte[] datas = iSerializable.serialize(stu);
-        System.out.println(StrUtils.newStringUtf8(datas));
+        System.out.println(StrUtil.newStringUtf8(datas));
         System.out.println(datas.length);
 
         Stu outStu = iSerializable.deserialize(datas, Stu.class);

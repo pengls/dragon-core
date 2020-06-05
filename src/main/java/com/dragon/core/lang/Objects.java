@@ -14,7 +14,7 @@ import java.util.Map;
  * @Date: 2020/4/1 20:31
  * @Version V1.0
  */
-public class Objects {
+public final class Objects {
 
     public static void nullSafeClose(Closeable... closeables) {
         if (closeables == null) {
