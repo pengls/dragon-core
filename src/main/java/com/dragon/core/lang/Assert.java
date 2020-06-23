@@ -3,7 +3,6 @@ package com.dragon.core.lang;
 import com.dragon.core.lang.exception.BaseRuntimeException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import java.util.Collection;
 import java.util.function.Supplier;
 
