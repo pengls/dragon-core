@@ -2,8 +2,7 @@ package com.dragon.core.thread;
 
 import org.junit.Test;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 /**
  * @ClassName: ThreadTest
@@ -44,5 +43,11 @@ public class ThreadTest {
             });
             Thread.sleep(500);
         }
+    }
+
+    @Test
+    public void t3() throws ExecutionException, InterruptedException {
+        Future<String> future = ThreadUtil.submit(() -> "Hello" );
+        System.out.println(future.get());
     }
 }

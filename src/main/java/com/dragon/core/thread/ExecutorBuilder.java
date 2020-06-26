@@ -120,7 +120,9 @@ public class ExecutorBuilder {
             if (nameFormat != null) {
                 thread.setName(format(nameFormat, count.getAndIncrement()));
             }
-            thread.setDaemon(daemon);
+            if (daemon != null) {
+                thread.setDaemon(daemon);
+            }
             if (priority != null) {
                 thread.setPriority(priority);
             }

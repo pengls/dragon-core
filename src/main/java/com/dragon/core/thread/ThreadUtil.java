@@ -1,5 +1,7 @@
 package com.dragon.core.thread;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -33,6 +35,22 @@ public final class ThreadUtil {
 
     public static ThreadPoolExecutor newExecutor(String nameFormat, int corePoolSize, int maxPoolSize) {
         return new ExecutorBuilder().corePoolSize(corePoolSize).maxPoolSize(maxPoolSize).nameFormat(nameFormat).build();
+    }
+
+    public static void execute(Runnable runnable) {
+        DefaultThreadPool.INSTANCE.execute(runnable);
+    }
+
+    public static <T> Future<T> submit(Callable<T> task) {
+        return DefaultThreadPool.INSTANCE.submit(task);
+    }
+
+    public static Future<?> submit(Runnable runnable) {
+        return DefaultThreadPool.INSTANCE.submit(runnable);
+    }
+
+    public static ThreadPoolExecutor getDefaultExecutor() {
+        return DefaultThreadPool.INSTANCE.getExecutor();
     }
 
 }
