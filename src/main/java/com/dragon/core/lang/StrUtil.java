@@ -13,11 +13,11 @@ import java.nio.charset.StandardCharsets;
 public final class StrUtil {
 
     public static String newString(byte[] bytes, Charset charset) {
-        return bytes == null ? null : new String(bytes, charset);
+        return bytes == null ? null : ByteUtil.toString(bytes, charset);
     }
 
     public static String newStringUtf8(byte[] bytes) {
-        return newString(bytes, StandardCharsets.UTF_8);
+        return ByteUtil.toString(bytes);
     }
 
 
