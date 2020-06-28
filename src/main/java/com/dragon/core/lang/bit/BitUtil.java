@@ -23,24 +23,36 @@ public final class BitUtil {
         return (n & 1) == 1;
     }
 
-    public static String toBinaryString(int num, int digits) {
-        int value = 1 << digits | num;
-        String bs = Integer.toBinaryString(value);
-        return bs.substring(1);
-    }
-
     public static String toBinaryString(int num) {
-        return toBinaryString(num, 1 << 5 - 1);
+        return toBinaryString(num, false);
     }
 
-    public static String toBinaryString(long num, int digits) {
-        long value = 1 << digits | num;
-        String bs = Long.toBinaryString(value);
-        return bs.substring(1);
+    public static String toBinaryString(int num, boolean simple) {
+        return toBinaryString(Integer.valueOf(num), simple);
     }
 
     public static String toBinaryString(long num) {
-        return toBinaryString(num, 1 << 5 - 1);
+        return toBinaryString(num, false);
+    }
+
+    public static String toBinaryString(long num, boolean simple) {
+        return toBinaryString(Long.valueOf(num), simple);
+    }
+
+    private static String toBinaryString(Number num, boolean simple) {
+        int size = num instanceof Long ? Long.SIZE : Integer.SIZE;
+        StringBuilder sBuilder = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            sBuilder.append(num.longValue() & 1);
+            num = num.longValue() >>> 1;
+        }
+        String result = sBuilder.reverse().toString();
+        if (simple) {
+            int index = result.indexOf("1");
+
+            result = index == -1 ? "0" : result.substring(index);
+        }
+        return result;
     }
 
 }
