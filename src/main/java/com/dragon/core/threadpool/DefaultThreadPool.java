@@ -1,4 +1,4 @@
-package com.dragon.core.thread;
+package com.dragon.core.threadpool;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -16,7 +16,7 @@ public enum DefaultThreadPool {
     final ThreadPoolExecutor EXECUTOR;
 
     DefaultThreadPool() {
-        EXECUTOR = new ExecutorBuilder().nameFormat("DEFAULT-THREADPOOL-%s").build();
+        EXECUTOR = new ExecutorBuilder().name("default-threadpool").build();
     }
 
     public void execute(Runnable runnable) {

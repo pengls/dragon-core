@@ -47,9 +47,9 @@ public class BitUtilTest {
     @Test
     public void t3(){
         int status = 0;
-        System.out.println("init status : " + BitUtil.toBinaryString(status, 3));
+        System.out.println("init status : " + BitUtil.toBinaryString(status, true));
         status = BitSetUtil.set(status, 2);
-        System.out.println("after school sign : " + BitUtil.toBinaryString(status, 3));
+        System.out.println("after school sign : " + BitUtil.toBinaryString(status, true));
 
         System.out.println("check student sign : " + BitSetUtil.isSetted(status, 0));
         System.out.println("check company sign : " + BitSetUtil.isSetted(status, 1));
@@ -57,7 +57,7 @@ public class BitUtilTest {
         System.out.println("--------------------------");
 
         status = BitSetUtil.set(status, 0);
-        System.out.println("after student sign : " + BitUtil.toBinaryString(status, 3));
+        System.out.println("after student sign : " + BitUtil.toBinaryString(status, true));
 
         System.out.println("check student sign : " + BitSetUtil.isSetted(status, 0));
         System.out.println("check company sign : " + BitSetUtil.isSetted(status, 1));
@@ -66,7 +66,7 @@ public class BitUtilTest {
 
 
         status = BitSetUtil.set(status, 1);
-        System.out.println("after company sign : " + BitUtil.toBinaryString(status, 3));
+        System.out.println("after company sign : " + BitUtil.toBinaryString(status, true));
 
         System.out.println("check student sign : " + BitSetUtil.isSetted(status, 0));
         System.out.println("check company sign : " + BitSetUtil.isSetted(status, 1));

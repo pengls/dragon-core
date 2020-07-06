@@ -1,4 +1,4 @@
-package com.dragon.core.thread;
+package com.dragon.core.threadpool;
 
 import org.junit.Test;
 
@@ -12,8 +12,8 @@ import java.util.concurrent.*;
  * @Version V1.0
  */
 public class ThreadTest {
-    static ThreadPoolExecutor executor1 = new ExecutorBuilder().corePoolSize(1).maxPoolSize(2).nameFormat("T-T-%s").daemon(true).useArrayBlockingQueue(5).build();
-    static ThreadPoolExecutor executor2 = new ExecutorBuilder().corePoolSize(1).maxPoolSize(2).nameFormat("T-T-%s").daemon(true).useArrayBlockingQueue(5).rejectedHandler(new ThreadPoolExecutor.CallerRunsPolicy()).build();
+    static ThreadPoolExecutor executor1 = new ExecutorBuilder().corePoolSize(1).maxPoolSize(2).name("T-A").daemon(true).useArrayBlockingQueue(5).build();
+    static ThreadPoolExecutor executor2 = new ExecutorBuilder().corePoolSize(1).maxPoolSize(2).name("T-B").daemon(true).useArrayBlockingQueue(5).rejectedHandler(new ThreadPoolExecutor.CallerRunsPolicy()).build();
 
     @Test
     public void t1() throws InterruptedException {
@@ -47,7 +47,8 @@ public class ThreadTest {
 
     @Test
     public void t3() throws ExecutionException, InterruptedException {
-        Future<String> future = ThreadUtil.submit(() -> "Hello" );
+        Future<String> future = ThreadHelper.submit(() -> "Hello" );
         System.out.println(future.get());
+        Thread.sleep(1000000000);
     }
 }

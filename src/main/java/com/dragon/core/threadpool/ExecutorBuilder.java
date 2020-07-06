@@ -1,4 +1,4 @@
-package com.dragon.core.thread;
+package com.dragon.core.threadpool;
 
 import com.dragon.core.lang.Assert;
 
@@ -22,12 +22,12 @@ public class ExecutorBuilder {
 
     private int corePoolSize = DEFAULT_CORE_POOL_SIZE;
     private int maxPoolSize = DEFAULT_MAX_POOL_SIZE;
-    private long keepAliveTime = TimeUnit.SECONDS.toNanos(DEFAULT_KEEP_ALIVE_TIME);
+    private long keepAliveTime = TimeUnit.SECONDS.toMillis(DEFAULT_KEEP_ALIVE_TIME);
     private BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue(DEFAULT_QUEUE_CAPACITY);
     private ThreadFactory threadFactory;
     private RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();
     private Boolean allowCoreThreadTimeOut;
-    private String nameFormat;
+    private String name;
     private Boolean daemon;
     private Integer priority;
     private UncaughtExceptionHandler uncaughtExceptionHandler;
@@ -45,7 +45,7 @@ public class ExecutorBuilder {
     }
 
     public ExecutorBuilder keepAliveTime(long keepAliveTime, TimeUnit unit) {
-        return keepAliveTime(unit.toNanos(keepAliveTime));
+        return keepAliveTime(unit.toMillis(keepAliveTime));
     }
 
     public ExecutorBuilder keepAliveTime(long keepAliveTime) {
@@ -90,9 +90,9 @@ public class ExecutorBuilder {
         return this;
     }
 
-    public ExecutorBuilder nameFormat(String nameFormat) {
-        Assert.isNotBlank(nameFormat, "nameFormat must not empty!");
-        this.nameFormat = nameFormat;
+    public ExecutorBuilder name(String name) {
+        Assert.isNotBlank(name, "name must not empty!");
+        this.name = name;
         return this;
     }
 
@@ -113,13 +113,13 @@ public class ExecutorBuilder {
     }
 
     public ThreadPoolExecutor build() {
+        Assert.isNotBlank(name, "name must not empty!");
         final ThreadFactory backingThreadFactory = this.threadFactory != null ? this.threadFactory : Executors.defaultThreadFactory();
-        AtomicLong count = nameFormat != null ? new AtomicLong(0) : null;
+        AtomicLong count = new AtomicLong(0);
+        String formatName = format(name + "-%s", count.incrementAndGet());
         ThreadFactory threadFactory = runnable -> {
             Thread thread = backingThreadFactory.newThread(runnable);
-            if (nameFormat != null) {
-                thread.setName(format(nameFormat, count.getAndIncrement()));
-            }
+            thread.setName(formatName);
             if (daemon != null) {
                 thread.setDaemon(daemon);
             }
@@ -135,7 +135,7 @@ public class ExecutorBuilder {
         final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
                 corePoolSize,
                 maxPoolSize,
-                keepAliveTime, TimeUnit.NANOSECONDS,
+                keepAliveTime, TimeUnit.MILLISECONDS,
                 workQueue,
                 threadFactory,
                 handler
@@ -143,6 +143,8 @@ public class ExecutorBuilder {
         if (null != this.allowCoreThreadTimeOut) {
             threadPoolExecutor.allowCoreThreadTimeOut(this.allowCoreThreadTimeOut);
         }
+
+        ThreadPoolManager.regist(formatName, threadPoolExecutor);
         return threadPoolExecutor;
     }
 

@@ -1,5 +1,7 @@
 package com.dragon.core.lang.bit;
 
+import com.dragon.core.lang.Assert;
+
 /**
  * @ClassName: BitSetUtil
  * @Description: BitSetUtil , set/unset/check int/long bit

@@ -29,6 +29,7 @@
         <jmh>1.23</jmh>
         <hessian>4.0.63</hessian>
         <javatuples>1.2</javatuples>
+        <hutool>5.3.8</hutool>
     </properties>
 
     <dependencies>
@@ -103,6 +104,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-setting</artifactId>
+            <version>${hutool}</version>
         </dependency>
 
         <!-- for test -->
