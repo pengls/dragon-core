@@ -23,7 +23,7 @@ public final class ThreadPoolManager {
     private static final ScheduledExecutorService scanThread = new ScheduledThreadPoolExecutor(1, r -> {
         Thread thread = Executors.defaultThreadFactory().newThread(r);
         thread.setDaemon(true);
-        thread.setName("THREAD-POOL-MANAGER");
+        thread.setName("thread-pool-manager");
         return thread;
     });
 
