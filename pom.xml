@@ -20,7 +20,7 @@
         <common-collections>4.4</common-collections>
         <common-codec>1.14</common-codec>
         <reflections>0.9.12</reflections>
-        <guava>28.2-jre</guava>
+        <guava>29.0-jre</guava>
         <slf4j>1.7.25</slf4j>
         <lombok>1.18.12</lombok>
         <fastjson>1.2.68</fastjson>
