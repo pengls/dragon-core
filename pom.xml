@@ -24,7 +24,7 @@
         <slf4j>1.7.25</slf4j>
         <lombok>1.18.12</lombok>
         <fastjson>1.2.68</fastjson>
-        <jackson>2.11.0</jackson>
+        <jackson>2.13.4.1</jackson>
         <kryo>5.0.0-RC1</kryo>
         <jmh>1.23</jmh>
         <hessian>4.0.63</hessian>
